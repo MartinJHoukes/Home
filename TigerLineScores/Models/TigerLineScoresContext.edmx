@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TigerLineScoresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CompMain">
+          <Key>
+            <PropertyRef Name="CompID" />
+          </Key>
+          <Property Name="CompID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompName" Type="varchar" MaxLength="100" />
+          <Property Name="DateStart" Type="date" />
+          <Property Name="DateEnd" Type="date" />
+          <Property Name="Format" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CompPlayer">
+          <Key>
+            <PropertyRef Name="CompPlayerID" />
+          </Key>
+          <Property Name="CompPlayerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompScore">
+          <Key>
+            <PropertyRef Name="CompScoreID" />
+          </Key>
+          <Property Name="CompScoreID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompID" Type="int" Nullable="false" />
+          <Property Name="CompPlayerID" Type="int" Nullable="false" />
+          <Property Name="CourseID" Type="int" Nullable="false" />
+          <Property Name="SSS" Type="int" />
+          <Property Name="Hole1" Type="int" />
+          <Property Name="Hole2" Type="int" />
+          <Property Name="Hole3" Type="int" />
+          <Property Name="Hole4" Type="int" />
+          <Property Name="Hole5" Type="int" />
+          <Property Name="Hole6" Type="int" />
+          <Property Name="Hole7" Type="int" />
+          <Property Name="Hole8" Type="int" />
+          <Property Name="Hole9" Type="int" />
+          <Property Name="Hole10" Type="int" />
+          <Property Name="Hole11" Type="int" />
+          <Property Name="Hole12" Type="int" />
+          <Property Name="Hole13" Type="int" />
+          <Property Name="Hole14" Type="int" />
+          <Property Name="Hole15" Type="int" />
+          <Property Name="Hole16" Type="int" />
+          <Property Name="Hole17" Type="int" />
+          <Property Name="Hole18" Type="int" />
+          <Property Name="PlayerHcap" Type="decimal" Precision="3" Scale="1" />
+          <Property Name="TotalPoints" Type="int" />
+          <Property Name="RndDate" Type="date" />
+          <Property Name="TeeColour" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CourseDetail">
+          <Key>
+            <PropertyRef Name="CourseDetailID" />
+          </Key>
+          <Property Name="CourseDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseID" Type="int" Nullable="false" />
+          <Property Name="HoleNumber" Type="int" Nullable="false" />
+          <Property Name="WhiteYrds" Type="int" />
+          <Property Name="YellowYrds" Type="int" />
+          <Property Name="MensPar" Type="int" />
+          <Property Name="MensSI" Type="int" />
+          <Property Name="RedYrds" Type="int" />
+          <Property Name="LadiesPar" Type="int" />
+          <Property Name="LadiesSI" Type="int" />
+        </EntityType>
+        <EntityType Name="CourseMain">
+          <Key>
+            <PropertyRef Name="CourseID" />
+          </Key>
+          <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClubName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="WhiteSSS" Type="int" />
+          <Property Name="YellowSSS" Type="int" />
+          <Property Name="RedSSS" Type="int" />
+        </EntityType>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ProfileID" />
+          </Key>
+          <Property Name="ProfileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="HomeClubID" Type="int" />
+          <Property Name="Handicap" Type="decimal" Precision="3" Scale="1" />
+          <Property Name="Photo" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="100" />
+          <Property Name="Admin" Type="bit" />
+        </EntityType>
+        <EntityContainer Name="TigerLineScoresModelStoreContainer">
+          <EntitySet Name="CompMain" EntityType="Self.CompMain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompPlayer" EntityType="Self.CompPlayer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompScore" EntityType="Self.CompScore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseDetail" EntityType="Self.CourseDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseMain" EntityType="Self.CourseMain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profile" EntityType="Self.Profile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TigerLineScoresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Admin" Type="Boolean" />
+        </EntityType>
+        <EntityContainer Name="TigerLineScoresEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Profiles" EntityType="TigerLineScoresModel.Profile" />
+          <EntitySet Name="CourseDetails" EntityType="TigerLineScoresModel.CourseDetail" />
+          <EntitySet Name="CourseMains" EntityType="TigerLineScoresModel.CourseMain" />
+          <EntitySet Name="CompMains" EntityType="TigerLineScoresModel.CompMain" />
+          <EntitySet Name="CompPlayers" EntityType="TigerLineScoresModel.CompPlayer" />
+          <EntitySet Name="CompScores" EntityType="TigerLineScoresModel.CompScore" />
+        </EntityContainer>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ProfileID" />
+          </Key>
+          <Property Name="ProfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Handicap" Type="Decimal" Precision="3" Scale="1" />
+          <Property Name="Photo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="HomeClubID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CourseDetail">
+          <Key>
+            <PropertyRef Name="CourseDetailID" />
+          </Key>
+          <Property Name="CourseDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <Property Name="HoleNumber" Type="Int32" Nullable="false" />
+          <Property Name="WhiteYrds" Type="Int32" />
+          <Property Name="YellowYrds" Type="Int32" />
+          <Property Name="MensPar" Type="Int32" />
+          <Property Name="MensSI" Type="Int32" />
+          <Property Name="RedYrds" Type="Int32" />
+          <Property Name="LadiesPar" Type="Int32" />
+          <Property Name="LadiesSI" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CourseMain">
+          <Key>
+            <PropertyRef Name="CourseID" />
+          </Key>
+          <Property Name="CourseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClubName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WhiteSSS" Type="Int32" />
+          <Property Name="YellowSSS" Type="Int32" />
+          <Property Name="RedSSS" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CompMain">
+          <Key>
+            <PropertyRef Name="CompID" />
+          </Key>
+          <Property Name="CompID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DateStart" Type="DateTime" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Precision="0" />
+          <Property Name="Format" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CompPlayer">
+          <Key>
+            <PropertyRef Name="CompPlayerID" />
+          </Key>
+          <Property Name="CompPlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompScore">
+          <Key>
+            <PropertyRef Name="CompScoreID" />
+          </Key>
+          <Property Name="CompScoreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompID" Type="Int32" Nullable="false" />
+          <Property Name="CompPlayerID" Type="Int32" Nullable="false" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <Property Name="SSS" Type="Int32" />
+          <Property Name="Hole1" Type="Int32" />
+          <Property Name="Hole2" Type="Int32" />
+          <Property Name="Hole3" Type="Int32" />
+          <Property Name="Hole4" Type="Int32" />
+          <Property Name="Hole5" Type="Int32" />
+          <Property Name="Hole6" Type="Int32" />
+          <Property Name="Hole7" Type="Int32" />
+          <Property Name="Hole8" Type="Int32" />
+          <Property Name="Hole9" Type="Int32" />
+          <Property Name="Hole10" Type="Int32" />
+          <Property Name="Hole11" Type="Int32" />
+          <Property Name="Hole12" Type="Int32" />
+          <Property Name="Hole13" Type="Int32" />
+          <Property Name="Hole14" Type="Int32" />
+          <Property Name="Hole15" Type="Int32" />
+          <Property Name="Hole16" Type="Int32" />
+          <Property Name="Hole17" Type="Int32" />
+          <Property Name="Hole18" Type="Int32" />
+          <Property Name="PlayerHcap" Type="Decimal" Precision="3" Scale="1" />
+          <Property Name="TotalPoints" Type="Int32" />
+          <Property Name="RndDate" Type="DateTime" Precision="0" />
+          <Property Name="TeeColour" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TigerLineScoresModelStoreContainer" CdmEntityContainer="TigerLineScoresEntities1">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profiles">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.Profile">
+              <MappingFragment StoreEntitySet="Profile">
+                <ScalarProperty Name="HomeClubID" ColumnName="HomeClubID" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Handicap" ColumnName="Handicap" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseDetails">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.CourseDetail">
+              <MappingFragment StoreEntitySet="CourseDetail">
+                <ScalarProperty Name="LadiesSI" ColumnName="LadiesSI" />
+                <ScalarProperty Name="LadiesPar" ColumnName="LadiesPar" />
+                <ScalarProperty Name="RedYrds" ColumnName="RedYrds" />
+                <ScalarProperty Name="MensSI" ColumnName="MensSI" />
+                <ScalarProperty Name="MensPar" ColumnName="MensPar" />
+                <ScalarProperty Name="YellowYrds" ColumnName="YellowYrds" />
+                <ScalarProperty Name="WhiteYrds" ColumnName="WhiteYrds" />
+                <ScalarProperty Name="HoleNumber" ColumnName="HoleNumber" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+                <ScalarProperty Name="CourseDetailID" ColumnName="CourseDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseMains">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.CourseMain">
+              <MappingFragment StoreEntitySet="CourseMain">
+                <ScalarProperty Name="RedSSS" ColumnName="RedSSS" />
+                <ScalarProperty Name="YellowSSS" ColumnName="YellowSSS" />
+                <ScalarProperty Name="WhiteSSS" ColumnName="WhiteSSS" />
+                <ScalarProperty Name="ClubName" ColumnName="ClubName" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompMains">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.CompMain">
+              <MappingFragment StoreEntitySet="CompMain">
+                <ScalarProperty Name="Format" ColumnName="Format" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="CompName" ColumnName="CompName" />
+                <ScalarProperty Name="CompID" ColumnName="CompID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompPlayers">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.CompPlayer">
+              <MappingFragment StoreEntitySet="CompPlayer">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CompID" ColumnName="CompID" />
+                <ScalarProperty Name="CompPlayerID" ColumnName="CompPlayerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompScores">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.CompScore">
+              <MappingFragment StoreEntitySet="CompScore">
+                <ScalarProperty Name="TeeColour" ColumnName="TeeColour" />
+                <ScalarProperty Name="RndDate" ColumnName="RndDate" />
+                <ScalarProperty Name="TotalPoints" ColumnName="TotalPoints" />
+                <ScalarProperty Name="PlayerHcap" ColumnName="PlayerHcap" />
+                <ScalarProperty Name="Hole18" ColumnName="Hole18" />
+                <ScalarProperty Name="Hole17" ColumnName="Hole17" />
+                <ScalarProperty Name="Hole16" ColumnName="Hole16" />
+                <ScalarProperty Name="Hole15" ColumnName="Hole15" />
+                <ScalarProperty Name="Hole14" ColumnName="Hole14" />
+                <ScalarProperty Name="Hole13" ColumnName="Hole13" />
+                <ScalarProperty Name="Hole12" ColumnName="Hole12" />
+                <ScalarProperty Name="Hole11" ColumnName="Hole11" />
+                <ScalarProperty Name="Hole10" ColumnName="Hole10" />
+                <ScalarProperty Name="Hole9" ColumnName="Hole9" />
+                <ScalarProperty Name="Hole8" ColumnName="Hole8" />
+                <ScalarProperty Name="Hole7" ColumnName="Hole7" />
+                <ScalarProperty Name="Hole6" ColumnName="Hole6" />
+                <ScalarProperty Name="Hole5" ColumnName="Hole5" />
+                <ScalarProperty Name="Hole4" ColumnName="Hole4" />
+                <ScalarProperty Name="Hole3" ColumnName="Hole3" />
+                <ScalarProperty Name="Hole2" ColumnName="Hole2" />
+                <ScalarProperty Name="Hole1" ColumnName="Hole1" />
+                <ScalarProperty Name="SSS" ColumnName="SSS" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+                <ScalarProperty Name="CompPlayerID" ColumnName="CompPlayerID" />
+                <ScalarProperty Name="CompID" ColumnName="CompID" />
+                <ScalarProperty Name="CompScoreID" ColumnName="CompScoreID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Tiger Line Scores - Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
+    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
+    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
+    <h4 style="clear: both">HOME</h4>
+</div>
+
+<div class="col-md-6">
+    <h3>Online Golf Scoring System</h3>
+    <p>Tiger Line Scores is an online golf scoring system that is easy to setup and use.</p>
+    <h3>Track your Performance</h3>
+    <p>You can track your scores and handicap.</p>
+    <h3>Leagues and Competitions</h3>
+    <p>Easily setup competitions and leagues with your friends.</p>
+    @if (Session["userid"] == null)
+    {
+        <h3>Register Today</h3>
+        <p>Click @Html.ActionLink("here", "Index", "Register") to register and start using Tiger Line Scores today.</p>
+    }
+
+    <br /><br /><br /><hr />
+</div>
+<div class="col-md-6">
+    <img id="imgScoreCard" src="~/Images/golfer-swing.png" height="175" style="margin: 100px" />
+</div>
+
+
+
+
+
+

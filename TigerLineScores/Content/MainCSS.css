@@ -1,0 +1,108 @@
+﻿body {
+}
+
+.popupnotvisible {
+    visibility: hidden;
+}
+
+ .popupvisible-Success {
+    width:  380px;
+    min-height: 50px;
+    text-align: left;
+    padding: 15px;
+    border: 1px solid green;
+    background-color :#dff895;
+    border-radius: 5px;
+    box-shadow: 6px 6px 10px grey;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -200px;
+    visibility: visible; 
+}
+
+ .popupvisible-Danger {
+    width:  380px;
+    min-height: 50px;
+    text-align: left;
+    padding: 15px;
+    border: 1px solid red;
+    background-color: palegoldenrod;
+    border-radius: 5px;
+    box-shadow: 6px 6px 10px grey;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -200px;
+    visibility: visible; 
+}
+
+.ScoreCard{
+
+    text-align: right;
+}
+
+.tableHeader{
+    text-align: center;
+    color: navy;
+}
+
+.yellow-back {
+    background-color: #f7de54;
+}
+
+.red-back {
+    background-color: #f66868;
+}
+
+.CompHeading {
+    color: darkgreen;
+    font-weight: bold;
+}
+
+.ScoreDblBogey{
+    border: 2px solid darkgray; 
+    width: 40px; 
+    text-align: center; 
+    border-radius: 10px; 
+    background-color: grey; 
+    color: white;
+}
+
+.ScoreBogey{
+    border: 2px solid darkgray;
+    width: 40px; 
+    text-align: center; 
+    border-radius: 10px; 
+    background-color: darkblue; 
+    color: white;
+}
+
+.ScorePar{
+    border: 2px solid darkgray; 
+    width: 40px; 
+    text-align: center; 
+    border-radius: 10px; 
+    background-color: palegreen; 
+    color: black;
+}
+
+.ScoreBirdie{
+    border: 2px solid darkgray; 
+    width: 40px; 
+    text-align: center; 
+    border-radius: 10px; 
+    background-color: orangered; 
+    color: white;
+}
+
+.ScoreEagle{
+    border: 2px solid darkgray; 
+    width: 40px; 
+    text-align: center; 
+    border-radius: 10px; 
+    background-color: yellow; 
+    color: black;
+}

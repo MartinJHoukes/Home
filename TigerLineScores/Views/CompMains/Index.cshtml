@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TigerLineScores.Models.CompMain>
+
+@{
+    ViewBag.Title = "Competition List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
+    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
+    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
+    <h4 style="clear: both">COMPETITIONS - SETUP</h4>
+</div>
+<br />
+
+<table class="table table-bordered" style="margin-bottom: 40px">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CompName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Format)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.CompName,"Edit", new { id = item.CompID }, new { @style="color: navy" })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Format)
+        </td>
+        <td>
+            <a href="@Url.Action("Index", "Players", new { CompID=item.CompID })" class = "btn btn-xs btn-success">
+                 Player List
+                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Delete", new { id=item.CompID })" class="btn btn-xs btn-danger">
+                Remove Competition
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </a>
+        </td>
+    </tr>
+}
+
+</table>
+<div class="col-md-12">
+    @Html.ActionLink("Add New Competition", "Create", null, new { @class = "btn btn-primary", @style = "margin-bottom: 20px" })
+</div>

@@ -1,0 +1,303 @@
+﻿@model TigerLineScores.Models.CompScore
+
+@*<script src="~/scripts/jsCalculate-Scores.js"></script>*@
+<script src="~/scripts/CalcScores.js"></script>
+<script src="~/scripts/jquery.numeric.min.js"></script>
+
+<span id="pHcap" style="visibility:hidden">@ViewBag.PHcap</span>
+
+@{ var holeScore = ViewBag.CurrentScore; }
+@{ var holePts = ViewBag.RndPoints; }
+
+
+    <div class="col-md-7">
+        <table class="table table-bordered table-hover" style="margin-top: 30px; margin-bottom: 20px">
+            <tr style="font-style: italic; text-align: center; background-color: whitesmoke">
+                <th style="text-align: center">
+                    Hole
+                </th>
+                <th style="text-align: center; background-color: @ViewBag.TeeColour">
+                    Yards
+                </th>
+                <th style="text-align: center">
+                    Par
+                </th>
+                <th style="text-align: center">
+                    SI
+                </th>
+                <th style="text-align: center">
+                    Score
+                </th>
+                <th style="text-align: center">
+                    Points
+                </th>
+            </tr>
+            @foreach (var item in ViewBag.scoreCard)
+            {
+
+                if (item.HoleNumber == 10)
+                {
+                    <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-top: 2px solid black; border-bottom: 2px solid black">
+                        <td style="text-align: Center">
+                            Out
+                        </td>
+                        <td style="padding-right: 20px; background-color: @ViewBag.TeeColour">
+                            @ViewBag.FrontYrds
+                        </td>
+                        <td style="padding-right: 20px">
+                            @ViewBag.FrontPar
+                        </td>
+                        <td style="padding-right: 20px"></td>
+                        <td id="frontScoreTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy"></td>
+                        <td id="frontPointsTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@holePts.OutPoints</td>
+                    </tr>
+
+                };
+                <tr class="ScoreCard">
+                    <td style="text-align: center">
+                        @item.HoleNumber
+                    </td>
+                    <td style="padding-right: 20px; background-color: @ViewBag.TeeColour">
+                        @item.HoleYrds
+                    </td>
+                    <td style="padding-right: 20px">
+                        @item.HolePar
+                    </td>
+                    <td style="padding-right: 20px">
+                        @item.HoleSI
+                    </td>
+                    <td style="text-align: center">
+                        @if (item.HoleNumber == 1)
+                        {
+                            @Html.TextBoxFor(model => model.Hole1, new { id = "scoreHole1", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole1 })
+                            @Html.ValidationMessageFor(model => model.Hole1)
+                        }
+                        @if (item.HoleNumber == 2)
+                        {
+                            @Html.TextBoxFor(model => model.Hole2, new { id = "scoreHole2", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole2 })
+                            @Html.ValidationMessageFor(model => model.Hole2)
+                        }
+                        @if (item.HoleNumber == 3)
+                        {
+                            @Html.TextBoxFor(model => model.Hole3, new { id = "scoreHole3", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole3 })
+                            @Html.ValidationMessageFor(model => model.Hole3)
+                        }
+                        @if (item.HoleNumber == 4)
+                        {
+                            @Html.TextBoxFor(model => model.Hole4, new { id = "scoreHole4", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole4 })
+                            @Html.ValidationMessageFor(model => model.Hole4)
+                        }
+                        @if (item.HoleNumber == 5)
+                        {
+                            @Html.TextBoxFor(model => model.Hole5, new { id = "scoreHole5", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole5 })
+                            @Html.ValidationMessageFor(model => model.Hole5)
+                        }
+                        @if (item.HoleNumber == 6)
+                        {
+                            @Html.TextBoxFor(model => model.Hole6, new { id = "scoreHole6", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole6 })
+                            @Html.ValidationMessageFor(model => model.Hole6)
+                        }
+                        @if (item.HoleNumber == 7)
+                        {
+                            @Html.TextBoxFor(model => model.Hole7, new { id = "scoreHole7", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole7 })
+                            @Html.ValidationMessageFor(model => model.Hole7)
+                        }
+                        @if (item.HoleNumber == 8)
+                        {
+                            @Html.TextBoxFor(model => model.Hole8, new { id = "scoreHole8", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole8 })
+                            @Html.ValidationMessageFor(model => model.Hole8)
+                        }
+                        @if (item.HoleNumber == 9)
+                        {
+                            @Html.TextBoxFor(model => model.Hole9, new { id = "scoreHole9", @class = "frontScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole9 })
+                            @Html.ValidationMessageFor(model => model.Hole9)
+                        }
+                        @if (item.HoleNumber == 10)
+                        {
+                            @Html.TextBoxFor(model => model.Hole10, new { id = "scoreHole10", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole10 })
+                            @Html.ValidationMessageFor(model => model.Hole10)
+                        }
+                        @if (item.HoleNumber == 11)
+                        {
+                            @Html.TextBoxFor(model => model.Hole11, new { id = "scoreHole11", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole11 })
+                            @Html.ValidationMessageFor(model => model.Hole11)
+                        }
+                        @if (item.HoleNumber == 12)
+                        {
+                            @Html.TextBoxFor(model => model.Hole12, new { id = "scoreHole12", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole12 })
+                            @Html.ValidationMessageFor(model => model.Hole12)
+                        }
+                        @if (item.HoleNumber == 13)
+                        {
+                            @Html.TextBoxFor(model => model.Hole13, new { id = "scoreHole13", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole13 })
+                            @Html.ValidationMessageFor(model => model.Hole13)
+                        }
+                        @if (item.HoleNumber == 14)
+                        {
+                            @Html.TextBoxFor(model => model.Hole14, new { id = "scoreHole14", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole14 })
+                            @Html.ValidationMessageFor(model => model.Hole14)
+                        }
+                        @if (item.HoleNumber == 15)
+                        {
+                            @Html.TextBoxFor(model => model.Hole15, new { id = "scoreHole15", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole15 })
+                            @Html.ValidationMessageFor(model => model.Hole15)
+                        }
+                        @if (item.HoleNumber == 16)
+                        {
+                            @Html.TextBoxFor(model => model.Hole16, new { id = "scoreHole16", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole16 })
+                            @Html.ValidationMessageFor(model => model.Hole16)
+                        }
+                        @if (item.HoleNumber == 17)
+                        {
+                            @Html.TextBoxFor(model => model.Hole17, new { id = "scoreHole17", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole17 })
+                            @Html.ValidationMessageFor(model => model.Hole17)
+                        }
+                        @if (item.HoleNumber == 18)
+                        {
+                            @Html.TextBoxFor(model => model.Hole18, new { id = "scoreHole18", @class = "backScore", @style = "text-align: center; width: 40px; font: bold 15px Comic Sans MS; color: navy", @Value = holeScore.Hole18 })
+                            @Html.ValidationMessageFor(model => model.Hole18)
+                        }
+                    </td>
+
+                    @if (item.HoleNumber < 10)
+                {
+                        <td class="frontPoints" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">
+                            @if (item.HoleNumber == 1)
+                            {
+                                @holePts.Hole1
+                            }
+                            @if (item.HoleNumber == 2)
+                            {
+                                @holePts.Hole2
+                            }
+                            @if (item.HoleNumber == 3)
+                            {
+                                @holePts.Hole3
+                            }
+                            @if (item.HoleNumber == 4)
+                            {
+                                @holePts.Hole4
+                            }
+                            @if (item.HoleNumber == 5)
+                            {
+                                @holePts.Hole5
+                            }
+                            @if (item.HoleNumber == 6)
+                            {
+                                @holePts.Hole6
+                            }
+                            @if (item.HoleNumber == 7)
+                            {
+                                @holePts.Hole7
+                            }
+                            @if (item.HoleNumber == 8)
+                            {
+                                @holePts.Hole8
+                            }
+                            @if (item.HoleNumber == 9)
+                            {
+                                @holePts.Hole9
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="backPoints" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">
+                            @if (item.HoleNumber == 10)
+                            {
+                                @holePts.Hole10
+                            }
+                            @if (item.HoleNumber == 11)
+                            {
+                                @holePts.Hole11
+                            }
+                            @if (item.HoleNumber == 12)
+                            {
+                                @holePts.Hole12
+                            }
+                            @if (item.HoleNumber == 13)
+                            {
+                                @holePts.Hole13
+                            }
+                            @if (item.HoleNumber == 14)
+                            {
+                                @holePts.Hole14
+                            }
+                            @if (item.HoleNumber == 15)
+                            {
+                                @holePts.Hole15
+                            }
+                            @if (item.HoleNumber == 16)
+                            {
+                                @holePts.Hole16
+                            }
+                            @if (item.HoleNumber == 17)
+                            {
+                                @holePts.Hole17
+                            }
+                            @if (item.HoleNumber == 18)
+                            {
+                                @holePts.Hole18
+                            }
+                        </td>
+                    }
+
+                </tr>
+            }
+
+            <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-top: 2px solid black">
+                <td style="text-align: Center">
+                    In
+                </td>
+                <td style="padding-right: 20px; background-color: @ViewBag.TeeColour">
+                    @ViewBag.BackYrds
+                </td>
+                <td style="padding-right: 20px">
+                    @ViewBag.BackPar
+                </td>
+                <td></td>
+                <td id="backScoreTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy"></td>
+                <td id="backPointsTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@holePts.InPoints</td>
+
+            </tr>
+            <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-color: gray ">
+                <td style="text-align: Center">
+                    Out
+                </td>
+                <td style="padding-right: 20px; background-color: @ViewBag.TeeColour">
+                    @ViewBag.FrontYrds
+                </td>
+                <td style="padding-right: 20px">
+                    @ViewBag.FrontPar
+                </td>
+                <td style="padding-right: 20px"></td>
+                <td id="outScoreTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy"></td>
+                <td id="outPointsTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@holePts.OutPoints</td>
+
+            </tr>
+            <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-bottom: 2px solid black">
+                <td style="text-align: Center">
+                    Total
+                </td>
+                <td style="padding-right: 20px; background-color: @ViewBag.TeeColour">
+                    @ViewBag.TotalYrds
+                </td>
+                <td style="padding-right: 20px">
+                    @ViewBag.TotalPar
+                </td>
+                <td style="padding-right: 20px"></td>
+                <td id="totalScore" style="text-align: center; font: bold 15px Comic Sans MS; color: navy; background-color: palegreen"></td>
+                <td id="totalPoints" style="text-align: center; font: bold 15px Comic Sans MS; color: navy; background-color: palegreen">@holePts.TotalPoints</td>
+
+            </tr>
+
+        </table>
+    </div>
+   
+
+
+<br /><br />
+
+<div>
+    @Html.HiddenFor(model => model.TotalPoints, new { id = "dbtotalPoints" })
+</div>

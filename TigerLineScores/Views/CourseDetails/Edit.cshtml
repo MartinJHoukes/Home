@@ -1,0 +1,102 @@
+﻿@model TigerLineScores.Models.CourseDetail
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
+    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
+    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
+    <h4 style="clear: both">HOLE DETAILS</h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@Session["EditHoleClubName"]</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CourseDetailID)
+
+     
+        @Html.HiddenFor(model => model.CourseID, new { htmlAttributes = new { @class = "form-control" } })
+              
+      
+        <div class="form-group">
+            @Html.LabelFor(model => model.HoleNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-2" style="margin-top: 6px; margin-left: 15px; font-weight: bold; border: 1px solid silver; background-color: whitesmoke; width: 40px; text-align: center; border-radius: 5px">
+                @Model.HoleNumber
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WhiteYrds, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.WhiteYrds, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.WhiteYrds, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.YellowYrds, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.YellowYrds, new { htmlAttributes = new { @class = "form-control",  @style = "background-color: #f7de54" } })
+                @Html.ValidationMessageFor(model => model.YellowYrds, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MensPar, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MensPar, new { htmlAttributes = new { @class = "form-control", @style = "background-color: #f7de54" } })
+                @Html.ValidationMessageFor(model => model.MensPar, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MensSI, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MensSI, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MensSI, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RedYrds, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.RedYrds, new { htmlAttributes = new { @class = "form-control", @style = "background-color:  #f66868" } })
+                @Html.ValidationMessageFor(model => model.RedYrds, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LadiesPar, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LadiesPar, new { htmlAttributes = new { @class = "form-control", @style = "background-color:  #f66868" } })
+                @Html.ValidationMessageFor(model => model.LadiesPar, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LadiesSI, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LadiesSI, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LadiesSI, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+                @Html.ActionLink("Cancel", "Details", "CourseMains", new { id = Model.CourseID }, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

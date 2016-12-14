@@ -1,0 +1,91 @@
+﻿@model TigerLineScores.Models.CourseDetail
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CourseDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourseID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HoleNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoleNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WhiteYrds)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WhiteYrds)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.YellowYrds)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.YellowYrds)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MensPar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MensPar)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MensSI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MensSI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RedYrds)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RedYrds)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LadiesPar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LadiesPar)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LadiesSI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LadiesSI)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CourseDetailID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

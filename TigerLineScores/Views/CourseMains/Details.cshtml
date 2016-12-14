@@ -1,0 +1,258 @@
+﻿@model IEnumerable<TigerLineScores.Models.CourseDetail>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
+    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
+    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
+    <h4 style="clear: both">SCORE CARD</h4>
+</div>
+
+<div>
+    <h4>@ViewBag.ClubName</h4>
+    <hr />
+</div>
+
+<div class="col-md-6">
+    @Html.ActionLink("Back to Course List", "Index", null, new { @class = "btn btn-default", @style = "margin-bottom: 20px" })
+</div>
+
+<div class="col-md-7 col-md-offset-1">
+    <table class="table table-condensed table-bordered table-hover">
+        <tr style="font-style: italic; text-align: center; background-color: whitesmoke">
+            <th>
+                @Html.DisplayNameFor(model => model.HoleNumber)
+            </th>
+            <th style="text-align: center">
+                @Html.DisplayNameFor(model => model.WhiteYrds)
+            </th>
+            <th style="text-align: center">
+                @Html.DisplayNameFor(model => model.MensPar)
+            </th>
+            <th style="text-align: center; background-color: #f7de54">
+                @Html.DisplayNameFor(model => model.YellowYrds)
+            </th>
+            <th style="text-align: center; background-color: #f7de54">
+                @Html.DisplayNameFor(model => model.MensPar)
+            </th>
+            <th style="text-align: center">
+                @Html.DisplayNameFor(model => model.MensSI)
+            </th>
+            <th style="text-align: center">
+                Score
+            </th>
+            <th style="text-align: center">
+                Points
+            </th>
+            <th style="text-align: center; background-color: #f66868">
+                @Html.DisplayNameFor(model => model.RedYrds)
+            </th>
+            <th style="text-align: center; background-color: #f66868">
+                @Html.DisplayNameFor(model => model.LadiesPar)
+            </th>
+            <th style="text-align: center">
+                @Html.DisplayNameFor(model => model.LadiesSI)
+            </th>
+
+        </tr>
+        @foreach (var item in Model)
+            {
+                if (item.HoleNumber == 10)
+                {
+                <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-top: 2px solid black; border-bottom: 2px solid black">
+                    <td style="text-align: Center">
+                        Out
+                    </td>
+                    <td style="padding-right: 20px">
+                        @ViewBag.FrontWhiteYrds
+                    </td>
+                    <td style="padding-right: 20px">
+                        @ViewBag.FrontMensPar
+                    </td>
+                    <td style="background-color: #f7de54; padding-right: 20px">
+                        @ViewBag.FrontYellowYrds
+                    </td>
+                    <td style="background-color: #f7de54; padding-right: 20px">
+                        @ViewBag.FrontMensPar
+                    </td>
+                    <td></td>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td style="background-color: #f66868; padding-right: 20px">
+                        @ViewBag.FrontRedYrds
+                    </td>
+                    <td style="background-color: #f66868; padding-right: 20px">
+                        @ViewBag.FrontLadiesPar
+                    </td>
+                    <td></td>
+                </tr>
+
+            };
+            <tr class="ScoreCard">
+                <td style="text-align: center">
+                    @Html.ActionLink(Convert.ToString(item.HoleNumber), "HoleDetail", "CourseDetails", new { courseID = item.CourseID, holenumber = item.HoleNumber }, 
+                                    new { @class = "btn btn-xs btn-default" })
+                </td>
+                <td style="padding-right: 20px">
+                    @Html.DisplayFor(modelItem => item.WhiteYrds)
+                </td>
+                <td style="padding-right: 20px">
+                    @Html.DisplayFor(modelItem => item.MensPar)
+                </td>
+                <td style="background-color: #f7de54; padding-right: 20px">
+                    @Html.DisplayFor(modelItem => item.YellowYrds)
+                </td>
+                <td style="background-color: #f7de54; padding-right: 20px">
+                    @Html.DisplayFor(modelItem => item.MensPar)
+                </td>
+                <td style="padding-right: 20px">
+                    @Html.DisplayFor(modelItem => item.MensSI)
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td style="background-color: #f66868; padding-right: 20px">
+                    @Html.DisplayFor(modelItem => item.RedYrds)
+                </td>
+                <td style="background-color: #f66868; padding-right: 20px">
+                    @Html.DisplayFor(modelItem => item.LadiesPar)
+                </td>
+                <td style="padding-right: 20px">
+                    @Html.DisplayFor(modelItem => item.LadiesSI)
+                </td>
+            </tr>
+        }
+
+        <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-top: 2px solid black">
+            <td style="text-align: Center">
+                In
+            </td>
+            <td style="padding-right: 20px">
+                @ViewBag.BackWhiteYrds
+            </td>
+            <td style="padding-right: 20px">
+                @ViewBag.BackMensPar
+            </td>
+            <td style="background-color: #f7de54; padding-right: 20px">
+                @ViewBag.BackYellowYrds
+            </td>
+            <td style="background-color: #f7de54; padding-right: 20px">
+                @ViewBag.BackMensPar
+            </td>
+            <td></td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td style="background-color: #f66868; padding-right: 20px">
+                @ViewBag.BackRedYrds
+            </td>
+            <td style="background-color: #f66868; padding-right: 20px">
+                @ViewBag.BackLadiesPar
+            </td>
+            <td></td>
+        </tr>
+        <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-color: gray ">
+            <td style="text-align: Center">
+                Out
+            </td>
+            <td style="padding-right: 20px">
+                @ViewBag.FrontWhiteYrds
+            </td>
+            <td style="padding-right: 20px">
+                @ViewBag.FrontMensPar
+            </td>
+            <td style="background-color: #f7de54; padding-right: 20px">
+                @ViewBag.FrontYellowYrds
+            </td>
+            <td style="background-color: #f7de54; padding-right: 20px">
+                @ViewBag.FrontMensPar
+            </td>
+            <td></td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td style="background-color: #f66868; padding-right: 20px">
+                @ViewBag.FrontRedYrds
+            </td>
+            <td style="background-color: #f66868; padding-right: 20px">
+                @ViewBag.FrontLadiesPar
+            </td>
+            <td></td>
+        </tr>
+        <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-bottom: 2px solid black">
+            <td style="text-align: Center">
+                Total
+            </td>
+            <td style="padding-right: 20px">
+                @ViewBag.TotalWhiteYrds
+            </td>
+            <td style="padding-right: 20px">
+                @ViewBag.TotalMensPar
+            </td>
+            <td style="background-color: #f7de54; padding-right: 20px">
+                @ViewBag.TotalYellowYrds
+            </td>
+            <td style="background-color: #f7de54; padding-right: 20px">
+                @ViewBag.TotalMensPar
+            </td>
+            <td></td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td style="background-color: #f66868; padding-right: 20px">
+                @ViewBag.TotalRedYrds
+            </td>
+            <td style="background-color: #f66868; padding-right: 20px">
+                @ViewBag.TotalLadiesPar
+            </td>
+            <td></td>
+        </tr>
+
+    </table>
+
+</div>
+<br/><br/><br/>
+
+<div class="container">
+    <!-- Modal Popup -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

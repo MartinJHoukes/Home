@@ -1,0 +1,38 @@
+﻿
+<div class="col-md-2">
+    @if (Session["UserName"] != null)
+    {
+        <div>
+            <img class="img-rounded img-responsive" style="width: 80px; margin-left: 10px; margin-bottom: 10px; box-shadow: 5px 5px 5px grey; border: 1px solid grey" src="@Session["UserPhoto"]" />
+        </div>
+        <div style="color: darkgreen; font-weight: bold; font-size:14px; padding-left: 10px">
+            @Session["UserName"]
+        <img style="width: 25px" src="~/Images/tick.png" />
+    </div><br />
+    }
+
+    <ul class="nav nav-pills nav-stacked" role="tablist">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("Competitions", "Index", "PlayerCompList")</li>
+        <li>
+            @Html.ActionLink(
+                                linkText: "Profile",
+                                actionName: "Edit",
+                                controllerName: "Profiles")
+        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+
+        
+        @if (Convert.ToBoolean(Session["Admin"]))
+            {
+            <li role="separator" class="divider"></li>
+            <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color: red" aria-haspopup="true" aria-expanded="false">Admin Options <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Current Users", "Index", "Users")</li>
+                    <li>@Html.ActionLink("Courses", "Index", "CourseMains")</li>
+                    <li>@Html.ActionLink("Competitions - Setup", "Index", "CompMains")</li>
+                </ul>
+            </li>
+            }
+    </ul>
+</div>
