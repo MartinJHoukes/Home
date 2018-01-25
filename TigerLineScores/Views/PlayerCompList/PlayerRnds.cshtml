@@ -1,109 +1,162 @@
 ﻿@model IEnumerable<TigerLineScores.Models.CompScore>
 
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
 @{
     ViewBag.Title = "Player Rounds";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 270px">PLAYER ROUNDS - OOM</h4>
 
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">PLAYER ROUNDS</h4>
-</div>
-<br />
-
-<H4 style="color: darkgreen; font-weight: bold">@ViewBag.CompName</H4>
-<H4>
-    <img id="uPhoto" src="@ViewBag.PlayerPhoto" style="height: 60px" />
-    @ViewBag.PlayerName
-</H4>
-<H5> Current Handicap : @ViewBag.CurrentHCap</H5>
-<br />
-
-<table class="table table-bordered">
-    <tr>
-        <th class="tableHeader">
-            Round
-        </th>
-        <th class="tableHeader">
-            Date
-        </th>
-        <th class="tableHeader">
-            Course
-        </th>
-        <th class="tableHeader">
-            Tee Colour
-        </th>
-        <th class="tableHeader">
-            Score
-        </th>
-        <th class="tableHeader">
-            Handicap
-        </th>
-        <th class="tableHeader">
-            NET Points
-        </th>
-        <th></th>
-    </tr>
-
-    @{int row = 0;}
-    @foreach (var item in ViewBag.RndSummary)
-    {
-        { row += 1; }
-
-        <tr>
-            <td style="text-align:center">
-                @row
-            </td>
-            <td>
-                @String.Format("{0:dd MMMM yyyy}", item.RndDate)
-            </td>
-            <td>
-                @item.ClubName
-            </td>
-
-            @{string teecolor = item.TeeColour;}
-            @switch (teecolor)
+    <br />
+    <H4 style="color: darkgreen; font-weight: bold">@ViewBag.CompName</H4>
+    <H4>
+        <img id="uPhoto" src="@ViewBag.PlayerPhoto" style="width: 60px" />
+        @ViewBag.PlayerName
+    </H4>
+    <div style="max-width: 900px">
+        <H5> Current Handicap : @ViewBag.CurrentHCap</H5>
+        <div class="btn-group pull-right" style="margin-bottom: 10px">
+            @if (ViewBag.SortBy == "Date")
             {
-                case "Yellow":
-                    <td class="yellow-back" style="text-align:center">
-                        @teecolor
-                    </td>
-                    break;
-                case "Red":
-                    <td class="red-back" style="text-align:center">
-                        @teecolor
-                    </td>
-                    break;
-                default:
-                    <td style="text-align:center">
-                        @teecolor
-                    </td>
-                    break;
+                <button class="btn btn-sm btn-success" style="margin-right: 5px" onclick="location.href = '@(Url.Action("PlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = ViewBag.CompPlayerID, sortBy = "Date" }))'" title="Sort by Date"><span class="glyphicon glyphicon-th-list"></span> Date</button>
+                <button class="btn btn-sm btn-default" onclick="location.href = '@(Url.Action("PlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = ViewBag.CompPlayerID, sortBy = "Points" }))'" title="Sort by Points"><span class="glyphicon glyphicon-th-list"></span> Points</button>
             }
-            <td style="text-align: center; font-weight: bold">
-                @item.RndScore
-            </td>
-            <td style="text-align: center">
-                @Convert.ToInt32(item.Handicap)
-            </td>
-            <td style="text-align: center; font-weight: bold">
-                @item.NETRndPoints
-            </td>
-            <td>
-                <a href="@Url.Action("PlayerScoreCard","PlayerCompList", new { CompScoreID = item.CompScoreID, rndNumber = item.RndNumber })" class="btn btn-xs btn-primary">
-                    View Score Card
-                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                </a>
-               
-            </td>
+            else
+            {
+                <button class="btn btn-sm btn-default" style="margin-right: 5px" onclick="location.href = '@(Url.Action("PlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = ViewBag.CompPlayerID, sortBy = "Date" }))'" title="Sort by Date"><span class="glyphicon glyphicon-th-list"></span> Date</button>
+                <button class="btn btn-sm btn-success" onclick="location.href = '@(Url.Action("PlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = ViewBag.CompPlayerID, sortBy = "Points" }))'" title="Sort by Points"><span class="glyphicon glyphicon-th-list"></span> Points</button>
+            }
+        </div>
+    </div>
+    <table class="table table-bordered" id="maintable" style="max-width: 900px">
+        <tr style="background-color: whitesmoke">
+            <th class="tableHeader hidden-xs">
+                Round
+            </th>
+            <th class="tableHeader visible-xs">
+                Rnd
+            </th>
+            <th class="tableHeader" onclick="location.href = '@(Url.Action("PlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = ViewBag.CompPlayerID, sortBy = "Date" }))'" title="Sort by Date">
+                Date
+            </th>
+            <th class="tableHeader">
+                Course
+            </th>
+            <th class="tableHeader hidden-xs">
+                Tee Colour
+            </th>
+            <th class="tableHeader">
+                Gross Score
+            </th>
+            <th class="tableHeader hidden-xs">
+                Handicap
+            </th>
+            <th class="tableHeader hidden-xs" onclick="location.href = '@(Url.Action("PlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = ViewBag.CompPlayerID, sortBy = "Points" }))'" title="Sort by Points">
+                NET Points
+            </th>
+            <th class="tableHeader visible-xs" onclick="location.href = '@(Url.Action("PlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = ViewBag.CompPlayerID, sortBy = "Points" }))'" title="Sort by Points">
+                NET Pts
+            </th>
         </tr>
-                }
-</table>
 
+        @foreach (var item in ViewBag.RndSummary)
+        {
+            if (item.Discard != true) // SCORE DOES COUNT
+            {
+                <tr onclick="ShowScoreCard(@item.CompScoreID, @item.RndNumber)" title="View Score Card">
+                    @*<tr onclick="location.href = '@(Url.Action("PlayerScoreCard", "PlayerCompList", new { CompScoreID = item.CompScoreID, rndNumber = item.RndNumber }))'" title="View Score Card">*@
+                    <td style="text-align:center">
+                        @item.RndNumber
+                    </td>
+                    <td class="hidden-xs">
+                        @String.Format("{0:dd MMMM yyyy}", item.RndDate)
+                    </td>
+                    <td class="visible-xs">
+                        @String.Format("{0:dd MMM yy}", item.RndDate)
+                    </td>
+                    @if (ViewBag.PlayerHomeID == item.CourseID)
+                    {
+                        <td>
+                            @item.ClubName
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @item.ClubName
+                        </td>
+                    }
+
+                    @{string teecolor = item.TeeColour;}
+                    @switch (teecolor)
+                    {
+                        case "Yellow":
+                            <td class="yellow-back hidden-xs" style="text-align:center">
+                                @teecolor
+                            </td>
+                            break;
+                        case "Red":
+                            <td class="red-back hidden-xs" style="text-align:center">
+                                @teecolor
+                            </td>
+                            break;
+                        default:
+                            <td class="hidden-xs" style="text-align:center">
+                                @teecolor
+                            </td>
+                            break;
+                    }
+                    <td style="text-align: center; font-weight: bold">
+                        @item.RndScore
+                    </td>
+                    <td class="hidden-xs" style="text-align: center">
+                        @Convert.ToInt32(item.Handicap)
+                    </td>
+                    <td style="text-align: center; font-weight: bold">
+                        @item.NETRndPoints
+                    </td>
+                </tr>
+                            }
+                        }
+
+
+
+    </table>
+</div>
 
 <div class="col-md-10">
     @Html.ActionLink("Back to League Table", "LeagueTable", "PlayerCompList", new { ViewBag.CompID }, new { @Class = "btn btn-default", style = "margin-top: 20px; margin-bottom: 50px" })
 </div>
 <br />
 
+<script>
+    var ShowScoreCard = function (compScoreID, rndNumber) {
+
+        var url = "/PlayerCompList/PlayerScoreCard?compScoreID=" + compScoreID + "&rndNumber=" + rndNumber;
+        $("#ScoreCardModalDetails").load(url, function () {
+            $("#ScoreCardModal").modal("show");
+        })
+    }
+
+</script>
+
+<div id="ScoreCardModal" role="dialog" class="modal fade" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="ScoreCardModalDetails" >
+
+                @*Partial View _Score Card Here*@
+
+            </div>
+           
+        </div>
+    </div>
+</div>

@@ -13,7 +13,6 @@ namespace TigerLineScores.Controllers
     [Authorize]
     public class ScoresController : Controller
     {
-      
         private TigerLineScoresEntities1 db = new TigerLineScoresEntities1();
         public RndSummary rndSum = new RndSummary();
         public PlayerStats pStats = new PlayerStats();
@@ -32,7 +31,8 @@ namespace TigerLineScores.Controllers
                              select new RndSummary { CompScoreID = pr.CompScoreID, RndDate = pr.RndDate, ClubName = cm.ClubName, TeeColour = pr.TeeColour, RndPoints = pr.TotalPoints, CourseID = pr.CourseID, SSS = pr.SSS  };
 
             // Get and store the Total Score for each round
-            List<object> playerRndsIncScore = new List<object>();
+            List<RndSummary> playerRndsIncScore = new List<RndSummary>();
+            int RndNumber = 1;
             foreach (var item in playerRnds)
             {
                  var RndIncScore = new RndSummary();
@@ -45,15 +45,20 @@ namespace TigerLineScores.Controllers
                 RndIncScore.CourseID = item.CourseID;
                 RndIncScore.SSS = item.SSS;
                 RndIncScore.NETRndPoints = Convert.ToInt32(item.RndPoints - (cInfo.GetCoursePar(RndIncScore.CourseID, RndIncScore.TeeColour) - RndIncScore.SSS));
+                RndIncScore.RndNumber = RndNumber;
+                RndNumber += 1;
                 playerRndsIncScore.Add(RndIncScore);
             }
+
+            // *** Sort rnds into Points Order ***
+            List<RndSummary> sortedRnds = playerRndsIncScore.OrderByDescending(o => o.NETRndPoints).ToList();
 
             // Get Competition Name and Player Name
             ViewBag.PlayerName = pStats.GetPlayerName(compPlayerID);
             ViewBag.CompName = cMain.CompName;
             ViewBag.CompID = cMain.CompID;
 
-            ViewBag.RndSummary = playerRndsIncScore;
+            ViewBag.RndSummary = sortedRnds;
             return View();
         }
 
@@ -73,13 +78,25 @@ namespace TigerLineScores.Controllers
         }
 
         // GET: Scores/Create
-        public ActionResult Create(int compID, int compPlayerID)
+        public ActionResult Create(int compID, int userID, int courseID, string teeColour, int SSS, DateTime rndDate, string scorecardImage, int imageID)
         {
             // Set default Values for the CompScore model initial view
             var scoresModel =  new CompScore();
-            // default players home course
+           
+            // Get compPlayerID
             var pStats = new PlayerStats();
-            scoresModel.CourseID = pStats.HomeClubID(compPlayerID);
+            int compPlayerID = pStats.GetcompPlayerID(userID, compID);
+
+            // Populate the ScoresModel
+            scoresModel.CompID = compID;
+            scoresModel.CourseID = courseID;
+            scoresModel.CompPlayerID = compPlayerID;
+            scoresModel.TeeColour = teeColour;
+            scoresModel.SSS = SSS;
+            scoresModel.ImageID = imageID;
+
+            ViewBag.RndDate = rndDate;
+            ViewBag.cardImage = scorecardImage;
 
             // Get Competition Name
             CompMain compMain = db.CompMains.Find(compID);
@@ -88,7 +105,6 @@ namespace TigerLineScores.Controllers
 
             // Get Player Name
             CompPlayer compPlayer = db.CompPlayers.Find(compPlayerID);
-            int userID = compPlayer.UserID;
             User users = db.Users.Find(userID);
             ViewBag.PlayerName = users.UserName;   
 
@@ -100,6 +116,14 @@ namespace TigerLineScores.Controllers
             var courseInfo = new CourseInfo();
             ViewBag.CourseList = courseInfo.GetCourseList();
 
+            // Populate variable to Tee Colour ddl
+           ViewBag.TeeColourList = new SelectList(new[]
+                                          {
+                                              new {ID="White",Name="White"},
+                                              new{ID="Yellow",Name="Yellow"},
+                                              new{ID="Red",Name="Red"},
+                                          }, "ID", "Name");
+
             return View(scoresModel);
         }
 
@@ -108,7 +132,7 @@ namespace TigerLineScores.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CompScoreID,CompID,CompPlayerID,CourseID,TeeColour,SSS,Hole1,Hole2,Hole3,Hole4,Hole5,Hole6,Hole7,Hole8,Hole9,Hole10,Hole11,Hole12,Hole13,Hole14,Hole15,Hole16,Hole17,Hole18,PlayerHcap,RndDate")] CompScore compScore)
+        public ActionResult Create([Bind(Include = "CompScoreID,CompID,CompPlayerID,CourseID,TeeColour,SSS,Hole1,Hole2,Hole3,Hole4,Hole5,Hole6,Hole7,Hole8,Hole9,Hole10,Hole11,Hole12,Hole13,Hole14,Hole15,Hole16,Hole17,Hole18,PlayerHcap,RndDate,ImageID")] CompScore compScore)
         {
             if (ModelState.IsValid)
             {
@@ -122,7 +146,24 @@ namespace TigerLineScores.Controllers
                 db.CompScores.Add(compScore);
                 db.SaveChanges();
                 int compScoreID = compScore.CompScoreID;
-                return RedirectToAction("Edit","Scores", new { compScoreID });
+                int compID = compScore.CompID;
+                int imageID = Convert.ToInt32(compScore.ImageID);
+
+                // Uploaded score card processed
+                ScoreCardImage scImage = db.ScoreCardImages.Find(imageID);
+                scImage.Processed = true;
+
+                // move score card image to Score Cards/Completed  folder
+                string sourceFile = Server.MapPath(@scImage.CardImage);
+                string destinationFile = Server.MapPath(@scImage.CardImage.Replace("Pending","Completed"));
+                System.IO.File.Move(sourceFile, destinationFile);
+
+                scImage.CardImage = scImage.CardImage.Replace("Pending", "Completed");
+                db.Entry(scImage).State = EntityState.Modified;
+                db.SaveChanges();
+
+                // Go to the updated league table
+                return RedirectToAction("Index","Players", new { compID });
             }
 
             return Redirect(Request.UrlReferrer.PathAndQuery);
@@ -173,38 +214,26 @@ namespace TigerLineScores.Controllers
 
                 // Get the points total
                 compScore.TotalPoints = compPoints.TotalPoints;
+                int compID = compScore.CompID;
 
                 db.Entry(compScore).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index", new { compScore.CompID, compScore.CompPlayerID });
+
+                // Go to the updated league table
+                return RedirectToAction("Index", "Players", new { compID });
             }
             return View(compScore);
         }
 
-        // GET: Scores/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CompScore compScore = db.CompScores.Find(id);
-            if (compScore == null)
-            {
-                return HttpNotFound();
-            }
-            return View(compScore);
-        }
-
-        // POST: Scores/Delete/5
-        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteRnd(int compScoreID)
         {
-            CompScore compScore = db.CompScores.Find(id);
+            CompScore compScore = db.CompScores.Find(compScoreID);
+            int compID = compScore.CompID;
+            int compPlayerID = compScore.CompPlayerID;
             db.CompScores.Remove(compScore);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { compID, compPlayerID });
         }
 
         // Get the Selected Course SSS and return via a Json call
@@ -295,12 +324,12 @@ namespace TigerLineScores.Controllers
         }
 
         // Calculate the Points Score
-        public ActionResult PointsScore(int Hcap, int SI, int strokes, int par)
+        public ActionResult PointsScore(int Hcap, int SI, int strokes, int par, int compScoreID, int holeNumber)
         {
             PointsScore pScore = new Models.PointsScore();
             {
                 // Calculate points for this hole and send back using Json
-                pScore.points = pScore.calculatePointsScore(Hcap, SI, strokes, par);
+                pScore.points = pScore.calculatePointsScore(Hcap, SI, strokes, par, compScoreID, holeNumber);
             }
             
             return Json(new { newPoints = pScore }, JsonRequestBehavior.AllowGet);

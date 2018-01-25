@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using TigerLineScores.Models;
 
@@ -64,35 +65,47 @@ namespace TigerLineScores.Controllers
         {
             if (Session["userid"] == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
 
             // Get Club Names For Drop Down List
             var courseInfo = new CourseInfo();
-            ViewBag.HomeClubID = courseInfo.GetCourseList();
+            ViewBag.CourseList = courseInfo.GetCourseList();
 
-            // Get the current logged in user
+            // Get the user record
             User user = db.Users.Find(Session["userid"]);
-            var currentuserid = user.UserID;
+            var userID = user.UserID;
 
-            // Get the ProfileID
-            int profileid = 0;
+            // Get the Profile record
+            int profileID = 0;
             var getprofiles = from gp in db.Profiles
-                              where gp.UserID == currentuserid
+                              where gp.UserID == userID
                               select gp;
 
             foreach (var pro in getprofiles)
             {
-                profileid = pro.ProfileID;
-
+                profileID = pro.ProfileID;
             }
-            Profile profile = db.Profiles.Find(profileid);
+            Profile profile = db.Profiles.Find(profileID);
+
+            // Populate the UserProfile Model
+            UserProfile userProfile = new UserProfile();
+            userProfile.UserID = userID;
+            userProfile.UserName = user.UserName;
+            userProfile.Email = user.Email;
+            userProfile.ProfileID = profile.ProfileID;
+            userProfile.HomeCourseID = Convert.ToInt32(profile.HomeClubID);
+            userProfile.Handicap = Convert.ToDecimal(profile.Handicap);
+            userProfile.Photo = profile.Photo;
+
+            //Get User Name from the user table
+            ViewBag.UserName = user.UserName;
 
             if (profile == null)
             {
                 return HttpNotFound();
             }
-            return View(profile);
+            return View(userProfile);
         }
 
         // POST: Profiles/Edit/5
@@ -100,31 +113,53 @@ namespace TigerLineScores.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProfileID,UserID,FirstName,LastName,HomeClubID,Handicap,Photo")] Profile profile)
+        public ActionResult Edit([Bind(Include = "ProfileID,UserID,HomeCourseID,Handicap,Photo,Email,UserName")] UserProfile userProfile)
         {
             if (ModelState.IsValid)
             {
+                // Save Profile Record
+                Profile profile = db.Profiles.Find(userProfile.ProfileID);
+                profile.HomeClubID = userProfile.HomeCourseID;
+                profile.Handicap = userProfile.Handicap;
 
                 // Deal with Profile Photo ******************************
                 string photofileName = "";
                 HttpPostedFileBase photo = Request.Files["Profilephoto"];
                 if (photo.FileName != "")
                 {
+                    //Reduce size of file if required
                     photofileName = new FileInfo(photo.FileName).Name;
+                    WebImage img = new WebImage(photo.InputStream);
+                    if (img.Height > 600)
+                    {
+                        img.Resize(600, 600, true);
+                    }
                     string path = Path.Combine(Server.MapPath("~/Images/"), photofileName);
-                    photo.SaveAs(path);
+                    img.Save(path);
                     profile.Photo = "/Images/" + photofileName;
-                    
+                    Session["UserPhoto"] = profile.Photo;
                 }
-                Session["UserPhoto"] = profile.Photo;
+                else
+                {
+                    Session["UserPhoto"] = userProfile.Photo;
+                    profile.Photo = userProfile.Photo;
+                }
                 // ******************************************************
 
                 db.Entry(profile).State = EntityState.Modified;
                 db.SaveChanges();
+
+                // Save User Record
+                User user = db.Users.Find(userProfile.UserID);
+                user.UserName = userProfile.UserName;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+
+
                 TempData["EditMessage"] = "Profile successfully saved.";
                 return RedirectToAction("Edit");
             }
-            return View(profile);
+            return View(userProfile);
         }
 
         // GET: Profiles/Delete/5

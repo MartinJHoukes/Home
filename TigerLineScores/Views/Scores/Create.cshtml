@@ -6,6 +6,12 @@
 
 <script type="text/javascript">
     // Change the Colour of the ddlTeeColour & SSS boxes ***************
+
+    $(function () {
+        teecolorChange();
+    });
+
+
     $(function () {
         $("#ddlTeecolour").change(teecolorChange);
     });
@@ -39,6 +45,18 @@
     }
 </script>
 
+
+<script type="text/javascript">
+    // Revised Script 
+    $(function () {
+        // LOAD THE SCORE CARD PARTIAL VIEW ****
+        if ($('#ddlcourse option:selected').text() !== "Select a Course ..") {
+            $("#partialviews").load('/Scores/ScoreCard/?id=' + $("#ddlcourse").val() + "&teecolour=" + $("#ddlTeecolour").val() + "&PHcap=" + $("#Hcap").val());
+        }
+    });
+</script>
+
+
 <script type="text/javascript">
     // Gets the SSS for the Selected Course and Tee Colour via a Json call *****************
     $(function () {
@@ -55,7 +73,7 @@
             {
                 $("#partialviews").empty();
             }
-          
+
         });
         $("#ddlTeecolour").change(function () {
             $.get('/Scores/CourseSSS/?id=' + $("#ddlcourse").val() + "&teecolour=" + $(this).val(), function (data) {
@@ -84,80 +102,83 @@
     });
 </script>
 
+<script src="~/scripts/bootstrap-datepicker.min.js"></script>
 @********* jQuery Date Pickers for Round Date ************@
 <script>
   $( function() {
       $("#rndDate").datepicker({
-          dateFormat: "dd MM yy",
-          changeMonth: true,
-          changeYear: true
-      }).datepicker("setDate", new Date());
+          format: "dd MM yyyy",
+          autoclose: true
+      });
   } );
 </script>
 @*******************************************************************@
 
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">ENTER NEW ROUND</h4>
-</div>
-<br />
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px">NEW ROUND DETAILS</h4>
+    <br />
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.PlayerHcap, new { id = "Hcap", @Value = @ViewBag.PHcap })
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.PlayerHcap, new { id = "Hcap", @Value = @ViewBag.PHcap })
+        @Html.HiddenFor(model => model.ImageID)
 
-    <div class="form-horizontal">
-        <div class="col-md-3">
-            <h4>@ViewBag.CompName</h4>
-        </div>
-        <div class="col-md-2" style="font-weight: bold; color: white; background-color: darkgreen; text-align: center; border-radius: 5px">
-            <h5>@ViewBag.PlayerName</h5>
-        </div>
-        <div class="col-md-2" style="font-weight: bold; background-color: whitesmoke; text-align: center; border-radius: 5px; border: 1px solid darkgreen; margin-left: 5px">
-            <h5>Exact Handicap: @ViewBag.Hcap</h5>          
-        </div>
-        <br />
+        <div class="form-horizontal">
+            <div class="col-md-3">
+                <h4>@ViewBag.CompName</h4>
+            </div>
+            <div class="col-md-2" style="font-weight: bold; color: white; background-color: darkgreen; text-align: center; border-radius: 5px">
+                <h5>@ViewBag.PlayerName</h5>
+            </div>
+            <div class="col-md-2" style="font-weight: bold; background-color: whitesmoke; text-align: center; border-radius: 5px; border: 1px solid darkgreen; margin-left: 5px">
+                <h5>Exact Handicap: @ViewBag.Hcap</h5>
+            </div>
+            <br />
 
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        @Html.HiddenFor(model => model.CompScoreID, new { htmlAttributes = new { id = "compscoreid", @class = "form-control" } })
-        @Html.HiddenFor(model => model.CompID, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.HiddenFor(model => model.CompPlayerID, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.CompScoreID, new { htmlAttributes = new { id = "compscoreid", @class = "form-control" } })
+            @Html.HiddenFor(model => model.CompID, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.CompPlayerID, new { htmlAttributes = new { @class = "form-control" } })
 
-        <div class="col-md-2">
-            @Html.LabelFor(model => model.CourseID, htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownListFor(model => model.CourseID, ViewBag.CourseList as SelectList, "Select a Course ..", new { id = "ddlcourse", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
-        </div>
-        <div class="col-md-2">
-            @Html.LabelFor(model => model.TeeColour, htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownListFor(model => model.TeeColour, Model.TeeColourList(), new { id = "ddlTeecolour", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.TeeColour, "", new { @class = "text-danger" })
-        </div>
-        <div class="col-md-1">
-            @Html.LabelFor(model => model.SSS, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.SSS, new { htmlAttributes = new { @class = "form-control col-md-1", id = "sss" } })
-            @Html.ValidationMessageFor(model => model.SSS, "", new { @class = "text-danger" })
-        </div>
-        <div class="col-md-3">
-            @Html.LabelFor(model => model.RndDate, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.RndDate, new { htmlAttributes = new { @class = "form-control", id = "rndDate" } })
-            @Html.ValidationMessageFor(model => model.RndDate, "", new { @class = "text-danger" })
-        </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.CourseID, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.CourseID, ViewBag.CourseList as SelectList, "Select a Course ..", new { id = "ddlcourse", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.TeeColour, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.TeeColour, ViewBag.TeeColourList as SelectList, new { id = "ddlTeecolour", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TeeColour, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-1">
+                @Html.LabelFor(model => model.SSS, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.SSS, new { htmlAttributes = new { @class = "form-control col-md-1", id = "sss" } })
+                @Html.ValidationMessageFor(model => model.SSS, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.RndDate, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.RndDate, new { htmlAttributes = new { @class = "form-control datepicker", id = "rndDate", @readonly = "true", @style = "cursor: pointer; background-color: #fff", @Value = ViewBag.RndDate.ToString("dd MMMM yyyy") } })
+                @Html.ValidationMessageFor(model => model.RndDate, "", new { @class = "text-danger" })
+            </div>
 
-        @* SCORE CARD PARTIAL VIEW *@
-        <div id="partialviews" class="col-md-12">
-        </div>
+            @* SCORE CARD PARTIAL VIEW *@
+            <div id="partialviews" class="col-md-7">
+            </div>
 
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.ActionLink("Back to List of Players","Index","Players", new { @ViewBag.CompID }, new { @Class = "btn btn-default", style = "margin-top: 20px" })
-                <input type="submit" value="Save Round Score and Calculate Points" class="btn btn-success" style="margin-top: 20px" />
+            <div class="col-md-5">
+                <img id="cardImage" height="800" style="margin-top: 50px" src="@ViewBag.cardImage" />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.ActionLink("Back to List of Players", "Index", "Players", new { @ViewBag.CompID }, new { @Class = "btn btn-default", style = "margin-top: 20px" })
+                    <input type="submit" value="Save Round Score and Calculate Points" class="btn btn-success" style="margin-top: 20px" />
+                </div>
             </div>
         </div>
-    </div>
-    <br /><br /><br /><hr />
-}
+        <br /><hr />
+    }
+</div>

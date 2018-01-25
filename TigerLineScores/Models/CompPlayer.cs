@@ -17,5 +17,8 @@ namespace TigerLineScores.Models
         public int CompPlayerID { get; set; }
         public int CompID { get; set; }
         public int UserID { get; set; }
+        public Nullable<int> CurrentPos { get; set; }
+        public Nullable<int> WeekPos { get; set; }
+        public string MovementIcon { get; set; }
     }
 }

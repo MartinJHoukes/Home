@@ -1,10 +1,52 @@
 ﻿
-
-<div class="col-md-2">
-    <ul class="nav nav-pills nav-stacked" role="tablist">
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("Login", "Index", "Login")</li>
-        <li> @Html.ActionLink("Register", "Index", "Register")</li>
-    </ul>
+<div class="col-md-12">
+    <div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px; box-shadow: 3px 3px 3px gray">
+        <h3 class="col-md-offset-2" style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px ; float: left">TIGER LINE SCORES</h3>
+        <img class="hidden-xs" style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
+        <h4 style="clear: both"></h4>
+    </div>
+    <br />
 </div>
+
+<div class="col-md-2 hidden-xs">
+    <ul class="nav navbar-btn" role="tablist">
+        <li><a href="@Url.Action("Index", "Home")" style="color: navy; border: 1px solid silver; border-radius: 5px">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home 
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Index", "Login")" style="color: navy; border: 1px solid silver; border-radius: 5px">
+                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Log In
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Index", "Register")" style="color: navy; border: 1px solid silver; border-radius: 5px">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Register
+            </a>
+        </li>
+    </ul>
+    <br />
+</div>
+
+<div class="visible-xs">
+    <ul>
+        <li style="list-style: none; display: inline">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-sm" style="border: 1px solid silver; border-radius: 5px; color: navy">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home
+            </a>
+        </li>
+        <li style="list-style: none; display: inline">
+            <a href="@Url.Action("Index", "Login")" class="btn btn-default btn-sm" style="border: 1px solid silver; border-radius: 5px; color: navy">
+                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Log In
+            </a>
+        </li>
+        <li style="list-style: none; display: inline">
+            <a href="@Url.Action("Index", "Register")" class="btn btn-default btn-sm" style="border: 1px solid silver; border-radius: 5px; color: navy">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Register
+            </a>
+        </li>
+    </ul>
+    <br />
+</div>
+
 

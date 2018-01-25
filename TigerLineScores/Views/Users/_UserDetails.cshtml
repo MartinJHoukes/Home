@@ -1,0 +1,112 @@
+﻿
+@model TigerLineScores.Models.UserView
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="modal-header">
+    <div style="text-align: center" class="row">
+        <img class="img-thumbnail img-rounded" id="uPhoto" src="@Model.Photo" style="width: 80px; box-shadow: 5px 5px 5px grey" />
+        <h4>@Model.UserName</h4>
+    </div>
+</div>
+
+
+<div class="modal-body">
+
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <form id="mainForm">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UserID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div>
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 280px" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "col-md-offset-3 text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 280px" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "col-md-offset-3 text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Handicap, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div>
+                    @Html.EditorFor(model => model.Handicap, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 280px" } })
+                    @Html.ValidationMessageFor(model => model.Handicap, "", new { @class = "col-md-offset-3 text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HomeClubID, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div>
+                    @Html.DropDownListFor(model => model.HomeClubID, null, new { @class = "form-control", @style = "max-width: 280px" })
+                    @Html.ValidationMessageFor(model => model.HomeClubID, "", new { @class = "col-md-offset-3 text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div>
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 280px" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "col-md-offset-3 text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Admin, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Admin)
+                    @Html.ValidationMessageFor(model => model.Admin, "", new { @class = "col-md-offset-3 text-danger" })
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <a href="#" class="btn btn-success" id="saveDetails"><i class="glyphicon glyphicon-save"></i>Save Details</a>
+    <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#saveDetails").click(function () {
+
+            if ( ! $("#mainForm").valid()) {
+                return false;
+            }
+
+            var formData = $("#mainForm").serialize();
+            $.ajax({
+
+                type: "POST",
+                url: "/Users/SaveDetails",
+                data: formData,
+                success: function () {
+                    $("#modelUserDetails").modal("hide");
+                    window.location.href = "/Users/Index";
+                }
+            })
+        })
+    })
+
+    
+
+</script>

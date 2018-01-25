@@ -10,6 +10,7 @@ namespace TigerLineScores.Models
     public class PlayerView
     {
         public int compPlayerID { get; set; }
+
         [DisplayName("Player")]
         public string playerName { get; set; }
 
@@ -27,5 +28,9 @@ namespace TigerLineScores.Models
         public double avgPointsPerRnd { get; set; }
 
         public string Photo { get; set; }
+
+        public int posMove { get; set; }
+        public string movementIcon { get; set; }
+
     }
 }

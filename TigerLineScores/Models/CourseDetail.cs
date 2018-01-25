@@ -11,10 +11,7 @@ namespace TigerLineScores.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-
-    [MetadataType(typeof(CourseDetailMd))]
+    
     public partial class CourseDetail
     {
         public int CourseDetailID { get; set; }
@@ -28,32 +25,4 @@ namespace TigerLineScores.Models
         public Nullable<int> LadiesPar { get; set; }
         public Nullable<int> LadiesSI { get; set; }
     }
-
-    public class CourseDetailMd
-    {
-        [DisplayName("Hole")]
-        public int HoleNumber { get; set; }
-
-        [DisplayName("White Yards")]
-        public Nullable<int> WhiteYrds { get; set; }
-
-        [DisplayName("Yellow Yards")]
-        public Nullable<int> YellowYrds { get; set; }
-
-        [DisplayName("Mens Par")]
-        public Nullable<int> MensPar { get; set; }
-
-        [DisplayName("Mens SI")]
-        public Nullable<int> MensSI { get; set; }
-
-        [DisplayName("Red Yards")]
-        public Nullable<int> RedYrds { get; set; }
-
-        [DisplayName("Ladies Par")]
-        public Nullable<int> LadiesPar { get; set; }
-
-        [DisplayName("Ladies SI")]
-        public Nullable<int> LadiesSI { get; set; }
-    }
 }
-

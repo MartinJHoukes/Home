@@ -1,0 +1,81 @@
+﻿@model IEnumerable<TigerLineScores.Models.ScoreCardView>
+
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-10">
+
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px">UPLOADED SCORE CARDS</h4>
+    <br />
+    <br />
+
+    <table class="table table-bordered" style="max-width: 900px" id="maintable">
+        <tr style="color: navy; background-color: whitesmoke">
+            <th>
+                Player
+            </th>
+            <th>
+                Course
+            </th>
+            <th>
+                Tee Colour
+            </th>
+            <th style="text-align: center">
+                SSS
+            </th>
+            <th>
+                Round Date
+            </th>
+            <th>
+                Note
+            </th>
+            <th>
+                Score Card
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr onclick="location.href = '@(Url.Action("Create", "Scores", new { compID = ViewBag.CompID, userID = item.UserID, courseID = item.CourseID, teeColour = item.teeColour, SSS = item.SSS, rndDate = item.rndDate, scorecardImage = item.cardImage, imageID = item.ImageID }))'">
+                <td>
+                    @Html.DisplayFor(modelItem => item.playerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.courseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.teeColour)
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.SSS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td style="text-align: center">
+                    <a href="@Url.Action("Create","Scores", new { compID = ViewBag.CompID, userID = item.UserID, courseID = item.CourseID, teeColour = item.teeColour, SSS = item.SSS, rndDate = item.rndDate, scorecardImage = item.cardImage, imageID = item.ImageID })">
+                        <img id="cardImage" src="@item.cardImage" style="width: 30px" />
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    @Html.ActionLink("Back to List of Competitions", "Index", "CompMains", null, new { @Class = "btn btn-default" })
+    <br /><br />
+
+</div>
+

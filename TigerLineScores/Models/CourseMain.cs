@@ -11,10 +11,7 @@ namespace TigerLineScores.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-
-    [MetadataType(typeof(CourseMainMd))]
+    
     public partial class CourseMain
     {
         public int CourseID { get; set; }
@@ -22,22 +19,6 @@ namespace TigerLineScores.Models
         public Nullable<int> WhiteSSS { get; set; }
         public Nullable<int> YellowSSS { get; set; }
         public Nullable<int> RedSSS { get; set; }
-    }
-
-    public class CourseMainMd
-    {
-        [Required(ErrorMessage = "The club name is required")]
-        [DisplayName("Club Name")]
-        public string ClubName { get; set; }
-
-        [DisplayName("White SSS")]
-        public Nullable<int> WhiteSSS { get; set; }
-
-        [DisplayName("Yellow SSS")]
-        public Nullable<int> YellowSSS { get; set; }
-
-        [DisplayName("Red SSS")]
-        public Nullable<int> RedSSS { get; set; }
+        public string ImagePath { get; set; }
     }
 }
-

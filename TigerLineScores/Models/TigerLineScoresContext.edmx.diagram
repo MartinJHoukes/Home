@@ -6,12 +6,15 @@
     <edmx:Diagrams>
       <Diagram DiagramId="b9b0583c1ac04ba2af012bc332c50dbb" Name="Diagram1">
         <EntityTypeShape EntityType="TigerLineScoresModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TigerLineScoresModel.Profile" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TigerLineScoresModel.Profile" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="TigerLineScoresModel.CourseDetail" Width="1.5" PointX="0.75" PointY="3.5" />
-        <EntityTypeShape EntityType="TigerLineScoresModel.CourseMain" Width="1.5" PointX="2.625" PointY="3.625" />
-        <EntityTypeShape EntityType="TigerLineScoresModel.CompMain" Width="1.5" PointX="6.125" PointY="0.875" />
-        <EntityTypeShape EntityType="TigerLineScoresModel.CompPlayer" Width="1.5" PointX="6.125" PointY="3.25" />
+        <EntityTypeShape EntityType="TigerLineScoresModel.CourseMain" Width="1.5" PointX="2.625" PointY="3.5" />
+        <EntityTypeShape EntityType="TigerLineScoresModel.CompMain" Width="1.5" PointX="4.625" PointY="0.75" />
+        <EntityTypeShape EntityType="TigerLineScoresModel.CompPlayer" Width="1.5" PointX="6.375" PointY="0.75" />
         <EntityTypeShape EntityType="TigerLineScoresModel.CompScore" Width="1.5" PointX="8.125" PointY="0.75" />
+        <EntityTypeShape EntityType="TigerLineScoresModel.ScoreCardImage" Width="2" PointX="9.875" PointY="0.75" />
+        <EntityTypeShape EntityType="TigerLineScoresModel.UpcomingRnd" Width="1.5" PointX="4.375" PointY="3.5" />
+        <EntityTypeShape EntityType="TigerLineScoresModel.Message" Width="1.5" PointX="6.25" PointY="3.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

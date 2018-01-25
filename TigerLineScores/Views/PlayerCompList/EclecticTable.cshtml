@@ -1,0 +1,47 @@
+﻿
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+
+    $(function () {
+        var homeclubID = parseInt(@ViewBag.CourseID);
+        var compID = parseInt(@ViewBag.CompID);
+        $("#partialviews").load('/PlayerCompList/EclecticLeagueTable/?courseID=' + homeclubID + '&compID=' + compID);
+    });
+
+    function courseChange() {
+        /* Get the selected value of dropdownlist */
+        var selectedID = $(this).val();
+        var compID = parseInt(@ViewBag.CompID);
+        $("#partialviews").load('/PlayerCompList/EclecticLeagueTable/?courseID=' + selectedID + '&compID=' + compID);
+    };
+
+    $(function () {
+        $("#ddlCourse").change(courseChange);
+    });
+
+</script>
+
+@{
+    ViewBag.Title = "Eclectic League Table";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 270px">ECLECTIC LEAGUE TABLE</h4>
+    <br />
+    @Html.DropDownList("CourseID", ViewBag.CourseList as SelectList, null, new { id = "ddlCourse", @class = "form-control", @style = "max-width: 280px; margin-bottom: 40px; background-color: green; color: white" })
+
+    @* ECLECTIC LEAGUE TABLE PARTIAL VIEW **********************************@
+    <div id="partialviews">
+    </div>
+    @***********************************************************************@
+</div>
+
+
+

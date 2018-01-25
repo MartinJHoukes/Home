@@ -1,0 +1,67 @@
+﻿@model TigerLineScores.Models.UpcomingRnd
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>UpcomingRnd</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompPlayerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompPlayerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RndType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RndType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourseID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RndID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

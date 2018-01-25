@@ -1,61 +1,59 @@
 ﻿@model IEnumerable<TigerLineScores.Models.CourseMain>
 
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">COURSES</h4>
-</div>
-<br />
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px">COURSES</h4>
+    <br />
 
-@{
-    ViewBag.Title = "Course List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    @{
+        ViewBag.Title = "Course List";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
-<div class="col-md-12">
-    @Html.ActionLink("Add New Club Name", "Create", null, new { @class = "btn btn-primary", @style = "margin-bottom: 20px" })
-</div>
+    <div class="col-md-12">
+        @Html.ActionLink("Add New Club Name", "Create", null, new { @class = "btn btn-primary", @style = "margin-bottom: 20px" })
+    </div>
 
-<div class="col-md-12">
-    <table class="table table-bordered" style="margin-bottom: 20px">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ClubName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WhiteSSS)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.YellowSSS)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RedSSS)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
+    <div class="col-md-12">
+        <table class="table table-bordered" style="margin-bottom: 20px">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ClubName)
-                </td>
-                <td style = "text-align: center; width: 120px; border: 1px solid silver; border-radius: 5px">
-                    @Html.DisplayFor(modelItem => item.WhiteSSS)
-                </td>
-                <td style = "text-align: center; width: 120px; border: 1px solid silver; border-radius: 5px; background-color: #f7de54">
-                    @Html.DisplayFor(modelItem => item.YellowSSS)
-                </td>
-                <td style = "text-align: center; width: 120px; border: 1px solid silver; border-radius: 5px; background-color: #f66868">
-                    @Html.DisplayFor(modelItem => item.RedSSS)
-                </td>
-                <td class="btn-group">
-                    @Html.ActionLink("Details", "Details", new { id = item.CourseID }, new { @class = "btn btn-sm btn-default" })
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CourseID }, new { @class = "btn btn-sm btn-default" })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.CourseID }, new { @class = "btn btn-sm btn-default" })
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClubName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WhiteSSS)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YellowSSS)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RedSSS)
+                </th>
+                <th></th>
             </tr>
-        }
-    </table>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClubName)
+                    </td>
+                    <td style="text-align: center; width: 120px; border: 1px solid silver; border-radius: 5px">
+                        @Html.DisplayFor(modelItem => item.WhiteSSS)
+                    </td>
+                    <td style="text-align: center; width: 120px; border: 1px solid silver; border-radius: 5px; background-color: #f7de54">
+                        @Html.DisplayFor(modelItem => item.YellowSSS)
+                    </td>
+                    <td style="text-align: center; width: 120px; border: 1px solid silver; border-radius: 5px; background-color: #f66868">
+                        @Html.DisplayFor(modelItem => item.RedSSS)
+                    </td>
+                    <td class="btn-group">
+                        @Html.ActionLink("Details", "Details", new { id = item.CourseID }, new { @class = "btn btn-sm btn-default" })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.CourseID }, new { @class = "btn btn-sm btn-default" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.CourseID }, new { @class = "btn btn-sm btn-default" })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <hr />
 </div>
-<hr />

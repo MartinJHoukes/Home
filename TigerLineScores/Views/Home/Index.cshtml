@@ -3,30 +3,68 @@
     ViewBag.Title = "Tiger Line Scores - Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">HOME</h4>
-</div>
 
-<div class="col-md-6">
-    <h3>Online Golf Scoring System</h3>
-    <p>Tiger Line Scores is an online golf scoring system that is easy to setup and use.</p>
-    <h3>Track your Performance</h3>
-    <p>You can track your scores and handicap.</p>
-    <h3>Leagues and Competitions</h3>
-    <p>Easily setup competitions and leagues with your friends.</p>
-    @if (Session["userid"] == null)
-    {
-        <h3>Register Today</h3>
-        <p>Click @Html.ActionLink("here", "Index", "Register") to register and start using Tiger Line Scores today.</p>
+<style>
+    .title {
+        border: 1px solid gray;
+        border-radius: 10px;
+        text-align: center;
+        padding: 5px;
+        background-color: palegreen;
     }
 
-    <br /><br /><br /><hr />
-</div>
-<div class="col-md-6">
-    <img id="imgScoreCard" src="~/Images/golfer-swing.png" height="175" style="margin: 100px" />
-</div>
+</style>
+<body>
+    <div class="col-lg-11" style="background-color: white; opacity: 0.8">
+        <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 300px">HOME</h4>
+        <h3>Online Golf Scoring System</h3>
+        <p>
+            <b>Tigerline Scores</b> is an online golf scoring system that creates an <b>Individual Order of Merit</b>, <b>Inter-Club Order of Merit</b> and a <b>Home Course Eclectic</b> competition in <b>1 season</b>.<br />
+            Register to play in the Indivdual Order of Merit and you will automatically be part of the Eclectic and Inter-Club competitions.<br />
+        </p>
+
+        <h3><b class="title">3</b> Competitions in <b class="title">1</b></h3><br />
+        <b>Order of Merit - Individual</b>
+        <ul>
+            <li>Open to members of different clubs.</li>
+            <li>Include rounds from any course in any competition entered or practice round played in the season.</li>
+            <li>A Minimum of <b>6</b> rounds to be submitted during the course of the season.</li>
+            <li>Individual league table calculated on your <b>average</b> stableford points per round.</li>
+            <li>Your best <b>10</b> rounds submitted are used to calculate your average stableford points per round</li>
+            <li>Full handicap applies.</li>
+            <li><b>All</b> score cards submitted must be <b>signed</b> by the player and <b>counter signed</b> by the marker.</li>
+        </ul><br />
+        <b>Order of Merit - Inter-Club</b>
+        <ul>
+            <li>Inter club league table calculated on the <b>average</b> of the <b>combined</b> stableford points of <b>ALL</b> players in the Individual Order of Merit competiton from the <b>same</b> club.<br /></li>
+            <li>Automatically calculated from rounds submitted for your Order of Merit - Individual competition.</li>
+            <li>Full handicap applies.</li>
+        </ul><br />
+        <b>Eclectic - Individual</b>
+        <ul>
+            <li>Individual league table calculated from your <b>best nett score</b> on each hole on your <b>home course.</b></li>
+            <li>Automatically calculated from rounds submitted for your Order of Merit - Individual competition.</li>
+            <li>Full handicap applies.</li>
+        </ul><br />
+
+        <p> The competitions run from 1st April to 30th September each year.</p>
+
+
+        @if (Session["userid"] == null)
+        {
+            <h3>Register Today</h3>
+            <p>Click @Html.ActionLink("here", "Index", "Register") to register and start using <b>Tigerline Scores</b> today.</p>
+        }
+        <hr />
+
+    </div>
+
+</body>
+
+
+
+
+
 
 
 

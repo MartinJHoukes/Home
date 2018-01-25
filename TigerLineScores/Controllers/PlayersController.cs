@@ -12,6 +12,9 @@ namespace TigerLineScores.Controllers
 
         private TigerLineScoresEntities1 db = new TigerLineScoresEntities1();
         private CourseInfo cInfo = new CourseInfo();
+        private string posUp = "/Images/posUp.png";
+        private string posDown = "/Images/posDown.png";
+        private string posNomove = "/Images/posNomove.png";
 
         // GET: Players
         public ActionResult Index(int? CompID)
@@ -32,7 +35,7 @@ namespace TigerLineScores.Controllers
                               orderby pl.UserName
                               select pl).ToList();
 
-            for (int i = playerList.Count-1 ; i > -1; i--)
+            for (int i = playerList.Count - 1; i > -1; i--)
             {
                 if (pStats.PlayerInComp(playerList[i].UserID, Convert.ToInt32(CompID)))
                 {
@@ -61,8 +64,13 @@ namespace TigerLineScores.Controllers
                 getPlayers[i].avgPointsPerRnd = 0;
                 if (getPlayers[i].rndsPlayed > 0)
                 {
-                    getPlayers[i].avgPointsPerRnd = Math.Round((Double)getPlayers[i].totalNETPoints / getPlayers[i].rndsPlayed,2);
-                } 
+                    int rnds = getPlayers[i].rndsPlayed;
+                    if (getPlayers[i].rndsPlayed > 10)
+                    {
+                        rnds = 10;
+                    }
+                    getPlayers[i].avgPointsPerRnd = Math.Round((Double)getPlayers[i].totalNETPoints / rnds, 2);
+                }
             };
 
             // Sort list into Points Descending and apply current Position
@@ -73,6 +81,32 @@ namespace TigerLineScores.Controllers
             for (int i = 0; i < sortedPlayers.Count(); i++)
             {
                 sortedPlayers[i].currentPosition = i + 1;
+
+                // Calc Positional Movement Current Position - Saved Current Position
+                int savedPos = pStats.GetCurrentPosition(sortedPlayers[i].compPlayerID);
+                if (savedPos > 0)
+                {
+                    int posMovement = savedPos - (i + 1);
+                    sortedPlayers[i].posMove = posMovement;
+
+                    if (posMovement > 0)
+                    {
+                        sortedPlayers[i].movementIcon = posUp;
+                        pStats.SaveMovementIcon(sortedPlayers[i].compPlayerID, posUp);
+                    }
+                    else if (posMovement < 0)
+                    {
+                        sortedPlayers[i].movementIcon = posDown;
+                        pStats.SaveMovementIcon(sortedPlayers[i].compPlayerID, posDown);
+                    }
+                    else
+                    {
+                        sortedPlayers[i].movementIcon = pStats.GetMovementIcon(sortedPlayers[i].compPlayerID);
+                    }
+                }
+
+                //Update Current Player Position in Comp Player Table
+                pStats.SaveCurrentPos(sortedPlayers[i].compPlayerID, i + 1);
             }
 
             return View(sortedPlayers);
@@ -84,17 +118,26 @@ namespace TigerLineScores.Controllers
             if (SelectedPlayers != null)
             {
                 // Add the New Player(s) to this competition
-                for (int i = 0; i < SelectedPlayers.Length ; i++)
+                for (int i = 0; i < SelectedPlayers.Length; i++)
                 {
                     var cPlayer = new Models.CompPlayer();
                     cPlayer.CompID = CompID;
                     cPlayer.UserID = SelectedPlayers[i];
+                    cPlayer.MovementIcon = posNomove;
                     db.CompPlayers.Add(cPlayer);
                 }
-                db.SaveChanges();              
+                db.SaveChanges();
             }
 
             return RedirectToAction("Index", new { compID = CompID });
+        }
+
+        public ActionResult DeletePlayer(int compPlayerID, int compID)
+        {
+            //Remove ALL records relating to this Comp Player
+            CompInfo compInfo = new CompInfo();
+            compInfo.RemovePlayer(compPlayerID);
+            return RedirectToAction("Index", new { compID });
         }
     }
 

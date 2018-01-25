@@ -5,53 +5,162 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">COMPETITIONS</h4>
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 320px">ORDER OF MERIT</h4>
+    <br />
+    <br />
+
+    <table class="table table-bordered" style="margin-bottom: 40px; max-width: 1000px" id="maintable">
+        <tr style="color: navy; background-color: whitesmoke">
+            <th>
+                @Html.DisplayNameFor(model => model.CompName)
+            </th>
+            <th class="hidden-xs">
+                @Html.DisplayNameFor(model => model.DateStart)
+            </th>
+            <th class="hidden-xs">
+                @Html.DisplayNameFor(model => model.DateEnd)
+            </th>
+            <th class="hidden-xs">
+                @Html.DisplayNameFor(model => model.Format)
+            </th>
+            <th class="hidden-xs">
+                Number of Players
+            </th>
+            <th class="visible-xs" style="text-align: center">
+                Score Card
+            </th>
+            <th class="hidden-xs">
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr onclick="location.href = '@(Url.Action("LeagueTable", "PlayerCompList", new { compID = item.CompID }))'">
+                <td>
+                   @item.CompName
+                </td>
+                <td class="hidden-xs">
+                    @Html.DisplayFor(modelItem => item.DateStart, new { @name="DateStart" })
+                </td>
+                <td class="hidden-xs">
+                    @Html.DisplayFor(modelItem => item.DateEnd, new { @name="DateEnd" })
+                </td>
+                <td class="hidden-xs">
+                    @Html.DisplayFor(modelItem => item.Format)
+                </td>
+                <td class="hidden-xs" style="text-align: center; font-weight: bold">
+                    @Html.DisplayFor(modelItem => item.NumberOfPlayers)
+                </td>
+                @if (item.DateEnd >= DateTime.Now.Date && item.DateStart <= DateTime.Now.Date)
+                {
+                    <td class="visible-xs" style="vertical-align: middle">
+                        <a href="@Url.Action("Create", "ScoreCardImages", new { compID = item.CompID }) " class="btn btn-xs btn-primary">
+                            Upload
+                            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                    <td class="hidden-xs" style="vertical-align: middle">
+                        <a href="@Url.Action("Create", "ScoreCardImages", new { compID = item.CompID }) " class="btn btn-xs btn-primary">
+                            Upload Score Card
+                            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+
+            </tr>
+        }
+
+    </table><br/>
 </div>
 
-<br />
 
-<table class="table table-bordered" style="margin-bottom: 40px">
-    <tr style="color: navy">
-        <th>
-            @Html.DisplayNameFor(model => model.CompName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateStart)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateEnd)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Format)
-        </th>
-        <th>
-            Number of Players
-        </th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.ActionLink(item.CompName, "LeagueTable", new { compID = item.CompID }, new { @class = "btn btn-default CompHeading" })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Format)
-            </td>
-            <td style="text-align: center; font-weight: bold">
-                @Html.DisplayFor(modelItem => item.NumberOfPlayers)
-            </td>
-        </tr>
+@*<div class="well col-lg-12">
+    <button class="btn btn-primary" type="button" onclick="test()">TEST</button>
+</div>*@
+
+
+@*<script type="text/javascript">
+ 
+    function test() {
+        var compFormat = [];
+        $('#maintable tr').each(function () {
+            compFormat.push({
+                format: $('td input[name="Format"]', this).val(),
+            });
+        });
+
+        $.ajax({
+            url: "PlayerCompList/Test",
+            type: this.method,
+            contentType: 'application/json',
+            data: compFormat,
+            success: function (response) {
+                alert('Document Saved.');
+            }
+        });
+
+        return false;
+    };
+
+</script>*@
+
+
+
+
+
+@* Successful Image Upload*@
+<div id="divSuccesspopup" class="popupnotvisible" style="margin-top: -20px">
+    <span>@TempData["SuccessUpload"]</span><br/><br/>
+    <button class="btn btn-xs btn-success" onclick="hideSuccesspopup()">close</button>
+</div>
+
+<div id="divFailpopup" class="popupnotvisible" style="margin-top: -20px">
+    <span>@TempData["FailUpload"]</span><br/><br/>
+    <button class="btn btn-xs btn-danger" onclick="hideFailpopup()">close</button>
+</div>
+
+<script type="text/javascript">
+    function showSuccesspopup() {
+        document.getElementById("divSuccesspopup").className = "popupvisible-Success";
     }
+    function hideSuccesspopup() {
+        document.getElementById("divSuccesspopup").className = "popupnotvisible";
+    }
+    function hideFailpopup() {
+        document.getElementById("divFailpopup").className = "popupnotvisible";
+    }
+    function gotoHomePage() {
+        window.location = '@Url.Action("Index","Home")';
+    }
+    function showFailpopup() {
+        document.getElementById("divFailpopup").className = "popupvisible-Danger";
+    }
+</script>
 
-</table>
+@if (TempData["SuccessUpload"] != null)
+{
+    <script type="text/javascript">
+      showSuccesspopup()
+    </script>
+}
+
+@if (TempData["FailUpload"] != null)
+{
+    <script type="text/javascript">
+      showFailpopup()
+    </script>
+}
 

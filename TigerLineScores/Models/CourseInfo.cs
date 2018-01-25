@@ -285,6 +285,20 @@ namespace TigerLineScores.Models
             return CourseTotal;
         }
 
+        public string GetCourseName(int courseID)
+        {
+            string courseName = "";
+            var Allcourses = from ac in db.CourseMains
+                             where ac.CourseID == courseID
+                             select ac;
+
+            foreach (var item in Allcourses)
+            {
+                courseName = item.ClubName;
+            }
+            return courseName;     
+        }
+
 
     }
 }

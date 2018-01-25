@@ -5,82 +5,107 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">CURRENT USERS</h4>
-</div>
-<br />
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px">CURRENT USERS</h4>
+    <br />
 
-<table class="table table-bordered">
-    <tr style="font-style: italic">
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th style="text-align: center">
-            Photo
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th style="text-align: center">
-            Handicap
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Admin)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in ViewBag.AllUsers)
-    {
-        <tr>
-            <td style="color: navy">
-                <a href="@Url.Action("Edit", new { id=item.UserID })" class="btn btn-default">
-                    @item.UserName
-                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                </a>
-            </td>
-            <td style="text-align: center">
-                <img id="uPhoto" src="@item.Photo" style="height: 40px" />
-            </td>
-            <td>
-                @item.Email
-            </td>
-            <td style="text-align: right; padding-right: 20px">
-                @item.Handicap
-            </td>
-
-            @if (item.Password != null)
-            {
-                <td style="color: darkgreen; padding-left: 25px">Yes</td>
-            }
-            else
-            {
-                <td style="color: red; padding-left: 25px">No</td>
-            }
-
-            @if (item.Admin)
-            {
-                <td style="color: darkgreen; padding-left: 25px">Yes</td>
-            }
-            else
-            {
-                <td style="color: red; padding-left: 25px">No</td>
-            }
-            <td class="btn-group">
-                <a href="@Url.Action("Delete", new { id=item.UserID })" class="btn btn-xs btn-danger">
-                    Remove User
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </a>
-
-            </td>
+    <table class="table table-bordered">
+        <tr style="font-style: italic">
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th style="text-align: center">
+                Photo
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th style="text-align: center">
+                Handicap
+            </th>
+            <th style="text-align: center">
+                Home Course
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin)
+            </th>
+            <th></th>
         </tr>
+
+        @foreach (var item in ViewBag.AllUsers)
+        {
+            <tr>
+                <td>
+                    <a href="#" class="btn btn-default" style="font:bold" onclick="ShowUser(@item.UserID)"><i class="glyphicon glyphicon-cog"></i> @item.UserName</a>                              
+                </td>
+                <td style="text-align: center">
+                    <img id="uPhoto" src="@item.Photo" style="height: 40px" />
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td style="text-align: right; padding-right: 20px">
+                    @item.Handicap
+                </td>
+                <td>
+                    @item.HomeCourse
+                </td>
+
+                @if (item.Password != null)
+                {
+                    <td style="color: darkgreen; padding-left: 25px">Yes</td>
+                }
+                else
+                {
+                    <td style="color: red; padding-left: 25px">No</td>
+                }
+
+                @if (item.Admin)
+                {
+                    <td style="color: darkgreen; padding-left: 25px">Yes</td>
+                }
+                else
+                {
+                    <td style="color: red; padding-left: 25px">No</td>
+                }
+                <td class="btn-group">
+                    <a href="@Url.Action("Delete", new { id=item.UserID })" class="btn btn-xs btn-danger">
+                        Remove User
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
+
+                </td>
+            </tr>
+        }
+
+    </table>
+    <br /><br /><br /><br />
+    <hr />
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+    var ShowUser = function (userID) {
+
+        var url = "/Users/ShowUser?UserID=" + userID;
+        $("#modalContentUserDetails").load(url, function () {
+            $("#modelUserDetails").modal("show");
+        })
     }
 
-</table>
-<br /><br /><br /><br />
-<hr />
+</script>
+
+
+<div id="modelUserDetails" role="dialog" class="modal fade" data-backdrop="false">
+    <div class="modal-dialog">
+        <div id="modalContentUserDetails" class="modal-content">
+
+          
+        </div>
+    </div>
+</div>
+

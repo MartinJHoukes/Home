@@ -20,6 +20,8 @@ namespace TigerLineScores.Models
         public int? RndPoints { get; set; }
         public int NETRndPoints { get; set; }
         public int RndNumber { get; set; }
+        public String Player { get; set; }
+        public bool Discard { get; set; }
 
         // Calc and get the Round Score
         public int GetRndScore(int CompScoreID)

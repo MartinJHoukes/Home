@@ -11,15 +11,11 @@ namespace TigerLineScores.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
-
-    [MetadataType(typeof(CompScoreMd))]
+    
     public partial class CompScore
     {
         public int CompScoreID { get; set; }
-        public int? CompID { get; set; }
+        public int CompID { get; set; }
         public int CompPlayerID { get; set; }
         public int CourseID { get; set; }
         public Nullable<int> SSS { get; set; }
@@ -45,26 +41,6 @@ namespace TigerLineScores.Models
         public Nullable<int> TotalPoints { get; set; }
         public Nullable<System.DateTime> RndDate { get; set; }
         public string TeeColour { get; set; }
-
-        public SelectList TeeColourList()
-        {
-            return new SelectList(new string[] { "White", "Yellow", "Red" });
-        }
-
-    }
-
-    public class CompScoreMd
-    {
-        [DisplayName("Course")]
-        public int CourseID { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]
-        [DisplayName("Round Date")]
-        [Required(ErrorMessage = "Please enter the round date ..")]
-        public Nullable<System.DateTime> RndDate { get; set; }
-
-        [DisplayName("Tee Colour")]
-        public string TeeColour { get; set; }
-
+        public Nullable<int> ImageID { get; set; }
     }
 }

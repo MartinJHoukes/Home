@@ -43,10 +43,10 @@ namespace TigerLineScores.Controllers
         {
 
             // Create Format DDL Options
-            var CompFormatList = new List<SelectListItem>
+            var CompFormatList = new List<SelectListItem>();
             {
-                new SelectListItem{ Text = "Stroke Play"},
-                new SelectListItem{ Text = "Stableford", Selected = true},
+               CompFormatList.Add(new SelectListItem() { Text = "Order of Merit : Stableford",  Selected = true });
+               CompFormatList.Add(new SelectListItem() { Text = "Modified Knock-Out : Stableford" });
             };
            
             ViewBag.FormatList = CompFormatList; 
@@ -63,6 +63,8 @@ namespace TigerLineScores.Controllers
         {
             if (ModelState.IsValid)
             {
+                DateTime CompStartDate =  Convert.ToDateTime(compMain.DateStart);
+                compMain.LeaguePosUpdate = CompStartDate.AddDays(7);
                 db.CompMains.Add(compMain);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -87,7 +89,6 @@ namespace TigerLineScores.Controllers
             // Create Format DDL Options
             var CompFormatList = new List<SelectListItem>
             {
-                new SelectListItem{ Text = "Stroke Play"},
                 new SelectListItem{ Text = "Stableford", Selected = true},
             };
 
@@ -112,31 +113,29 @@ namespace TigerLineScores.Controllers
             return View(compMain);
         }
 
-        // GET: CompMains/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CompMain compMain = db.CompMains.Find(id);
-            if (compMain == null)
-            {
-                return HttpNotFound();
-            }
-            return View(compMain);
-        }
 
-        // POST: CompMains/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteComp(int compID)
         {
-            CompMain compMain = db.CompMains.Find(id);
+            CompInfo compInfo = new CompInfo();
+            // Remove Each Player from this Competition
+            var AllPlayers = from ap in db.CompPlayers
+                             where ap.CompID == compID
+                             select ap;
+
+            foreach (var player in AllPlayers)
+            {
+                int compPlayerID = player.CompPlayerID;
+                compInfo.RemovePlayer(compPlayerID);
+            }
+
+            // Remove the Main Competition Record
+            CompMain compMain = db.CompMains.Find(compID);
             db.CompMains.Remove(compMain);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
+
 
         protected override void Dispose(bool disposing)
         {

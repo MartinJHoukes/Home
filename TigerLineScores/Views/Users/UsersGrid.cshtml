@@ -1,0 +1,53 @@
+﻿@using System.Web.Optimization
+@using Jq.Grid
+
+
+
+
+@model TigerLineScores.Models.UsersGridModel
+
+@{
+    ViewBag.Title = "UsersGrid";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Users</title>
+
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/redmond/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.3.1/css/ui.jqgrid.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.1.2/js/i18n/grid.locale-en.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.1.2/js/jquery.jqGrid.src.js"></script>
+
+    <style>
+        #UsersGrid .jqgrow {
+            cursor: pointer;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="container">
+
+        <h2>Users</h2>
+
+        <!-- The Partial HTML Grid Table -->
+        @Html.Grid().JQGridPartial(Model.UsersGrid)
+
+        <!-- The Grid Script client-side javascipt -->
+        @Html.Grid().JQGridScript(Model.UsersGrid)
+
+        <br /><br />
+
+    </div>
+
+
+</body>
+</html>

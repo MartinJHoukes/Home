@@ -1,12 +1,36 @@
 ﻿body {
+background-image: url(../Images/background_golf.jpg);
+background-repeat:no-repeat;
+background-size: 2000px;
+}
+
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.MainHeading{
+    width: 220px; 
+    height: 35px; 
+    padding-top: 5px; 
+    font-weight: bold; 
+    font-style: italic; 
+    font-size: 18px; 
+    color:white; 
+    background-color: darkgreen; 
+    text-align: center; 
+    margin-left: 10px;
 }
 
 .popupnotvisible {
-    visibility: hidden;
+    display: none;
+    height: 250px;
+    width: 300px;
 }
 
  .popupvisible-Success {
-    width:  380px;
+    width:  300px;
     min-height: 50px;
     text-align: left;
     padding: 15px;
@@ -14,16 +38,17 @@
     background-color :#dff895;
     border-radius: 5px;
     box-shadow: 6px 6px 10px grey;
-    position: fixed;
+    display: normal;
+    
+    position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -50px;
-    margin-left: -200px;
-    visibility: visible; 
+    margin-left: -150px;
+
 }
 
  .popupvisible-Danger {
-    width:  380px;
+    width:  300px;
     min-height: 50px;
     text-align: left;
     padding: 15px;
@@ -31,12 +56,13 @@
     background-color: palegoldenrod;
     border-radius: 5px;
     box-shadow: 6px 6px 10px grey;
-    position: fixed;
+    display: normal;
+
+    position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -50px;
-    margin-left: -200px;
-    visibility: visible; 
+    margin-left: -150px; 
+
 }
 
 .ScoreCard{

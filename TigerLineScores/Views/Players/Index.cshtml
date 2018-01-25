@@ -1,128 +1,113 @@
 ﻿@model IEnumerable<TigerLineScores.Models.PlayerView>
 
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
 @{
     ViewBag.Title = "Players";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">LIST OF PLAYERS</h4>
-</div>
-<br />
-<div class="form-horizontal">
-    <h4>@ViewBag.CompName</h4>   
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px">LIST OF PLAYERS</h4>
     <br />
-    <div class="col-md-12">
-        <table class="table table-bordered table-condensed" style="margin-bottom: 20px">
-            <tr style="color: navy">
-                <th style="text-align: center">
-                    Position
-                </th>
-                <th style="text-align: center">
-                    @Html.DisplayNameFor(model => model.playerName)
-                </th>
-                <th style="text-align: center">
-                    Total NET Points
-                </th>
-                <th style="text-align: center">
-                    @Html.DisplayNameFor(model => model.rndsPlayed)
-                </th>
-                <th style="text-align: center">
-                    Avg. Points per Round
-                </th>
-                <th></th>
-            </tr>
+    <div class="form-horizontal">
+        <h4>@ViewBag.CompName</h4>
+        <br />
+        <div class="col-md-12">
+            <table class="table table-bordered table-condensed" style="margin-bottom: 20px" id="maintable">
+                <tr style="color: navy">
+                    <th style="text-align: center">
+                        Position
+                    </th>
+                    <th style="text-align: center">
+                        @Html.DisplayNameFor(model => model.playerName)
+                    </th>
+                    <th style="text-align: center">
+                        Total NET Points
+                    </th>
+                    <th style="text-align: center">
+                        @Html.DisplayNameFor(model => model.rndsPlayed)
+                    </th>
+                    <th style="text-align: center">
+                        Avg. Points per Round
+                    </th>
+                    <th></th>
+                </tr>
 
-            @foreach (var item in Model)
+                @foreach (var item in Model)
             {
                 if (item.currentPosition == 1)
                 {
-                    <tr style="background-color: palegoldenrod; font-weight:bold">
-                        <td style="font-weight: bold; text-align:center; background-color: white">
-                            <img src="~/Images/Star1.jpeg" style="width: 20px" />
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.playerName)
-                        </td>
-                        <td style="text-align: right; padding-right: 30px">
-                            @Html.DisplayFor(modelItem => item.totalNETPoints)
-                        </td>
-                        <td style="text-align: center">
-                            @Html.DisplayFor(modelItem => item.rndsPlayed)
-                        </td>
-                        <td style="text-align: right; padding-right: 40px; font-weight: bold; color:darkgreen">
-                            @Html.DisplayFor(modelItem => item.avgPointsPerRnd)
-                        </td>
-                        <td>
-                            <a href="@Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }) " class="btn btn-xs btn-primary">
-                                View Rounds
-                                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-                            </a>
-                            <a href="@Url.Action("Create", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID })" class="btn btn-xs btn-success">
-                                New Round
-                                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                            </a>
-                            <a href="@Url.Action("Delete")" class="btn btn-xs btn-danger">
-                                Remove Player
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            </a>
-                        </td>
-                    </tr>
+                        <tr style="background-color: palegoldenrod; font-weight:bold">
+                            <td style="font-weight: bold; text-align:center; background-color: white" onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                <img src="~/Images/Star1.jpeg" style="width: 20px" />
+                                <img src=@item.movementIcon style="width: 10px" />
+                            </td>
+                            <td onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.playerName)
+                            </td>
+                            <td style="text-align: right; padding-right: 30px" onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.totalNETPoints)
+                            </td>
+                            <td style="text-align: center" onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.rndsPlayed)
+                            </td>
+                            <td style="text-align: right; padding-right: 40px; font-weight: bold; color:darkgreen" onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.avgPointsPerRnd)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("DeletePlayer", new { compPlayerID = item.compPlayerID, compID = ViewBag.CompID })" class="confirm" alt="Confirm Delete" style="color: red" title="Remove Player">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td style="text-align: center" onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.currentPosition)
+                                <img src=@item.movementIcon style="width: 10px" />
+                            </td>
+                            <td onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.playerName)
+                            </td>
+                            <td style="text-align: right; padding-right: 30px" onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.totalNETPoints)
+                            </td>
+                            <td style="text-align: center" onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.rndsPlayed)
+                            </td>
+                            <td style="text-align: right; padding-right: 40px; font-weight: bold; color:darkgreen" onclick="location.href = '@(Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }))'" title="View Round(s)">
+                                @Html.DisplayFor(modelItem => item.avgPointsPerRnd)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("DeletePlayer", new { compPlayerID = item.compPlayerID, compID = ViewBag.CompID })" class="confirm" alt="Confirm Delete" style="color: red" title="Remove Player">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 }
-                else
-                {
-                    <tr>
-                        <td style="text-align: center">
-                            @Html.DisplayFor(modelItem => item.currentPosition)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.playerName)
-                        </td>
-                        <td style="text-align: right; padding-right: 30px">
-                            @Html.DisplayFor(modelItem => item.totalNETPoints)
-                        </td>
-                        <td style="text-align: center">
-                            @Html.DisplayFor(modelItem => item.rndsPlayed)
-                        </td>
-                        <td style="text-align: right; padding-right: 40px; font-weight: bold; color:darkgreen">
-                            @Html.DisplayFor(modelItem => item.avgPointsPerRnd)
-                        </td>
-                        <td>
-                            <a href="@Url.Action("Index", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID }) " class="btn btn-xs btn-primary">
-                                View Rounds
-                                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-                            </a>
-                            <a href="@Url.Action("Create", "Scores", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID })" class="btn btn-xs btn-success">
-                                New Round
-                                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                            </a>
-                            <a href="@Url.Action("Delete")" class="btn btn-xs btn-danger">
-                                Remove Player
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            }
 
-        </table>
-    </div>
+            </table>
+        </div>
 
-    <div class="form-group">
-        <div class="col-md-10">
-            @Html.ActionLink("Back to List of Competitions", "Index", "CompMains", null, new { @Class = "btn btn-default" })
-            <button type="submit" onclick="showpopup()" class="btn btn-primary">
-                Add Player(s)
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-            </button>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.ActionLink("Back to List of Competitions", "Index", "CompMains", null, new { @Class = "btn btn-default" })
+                <button type="submit" onclick="showpopup()" class="btn btn-primary">
+                    Add Player(s)
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                </button>
+            </div>
         </div>
     </div>
-
 </div>
-
-
 
 <form method="post">
     <div id="divplayerList" class="popupnotvisible">
@@ -137,7 +122,7 @@
             </div>
         }
         <div class="form-group text-center">
-            <button class="btn btn-primary" onclick="hidepopup()">Cancel</button>
+            <input type="button" class="btn btn-primary" value="Cancel" onclick="hidepopup()" />
             <input type="submit" value="Add Player(s)" style="margin: 10px" class="btn btn-primary" />
         </div>
     </div>

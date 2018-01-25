@@ -1,0 +1,384 @@
+﻿@model TigerLineScores.Models.CompScore
+
+
+<script type="text/javascript" src="~/scripts/FormatScore.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#cardImage').click(function () {
+            var toggleHeight = $("#cardImage").height() == 500 ? "50px" : "500px";
+            $('#cardImage').animate({ height: toggleHeight });
+        });
+    });
+</script>
+
+<div class="modal-header">
+
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px">SCORE CARD</h4>
+    <button class="btn btn-sm btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+
+    <img id="cLogo" src=@ViewBag.CourseLogo style="width: 120px" />
+    <h4>@ViewBag.CourseName</h4>
+
+
+</div>
+
+<div class="modal-body">
+
+    <div class="row">
+        <div class="col-md-6">
+            <H4 style="color: darkgreen; font-weight: bold">@ViewBag.CompName</H4>
+            <label>
+                @ViewBag.PlayerName - Handicap : @Convert.ToInt32(Model.PlayerHcap)
+            </label>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <div style="border: 1px solid silver; border-radius: 5px; width: 160px; height: 22px; text-align: center; font-weight: bold; margin-bottom: 10px; margin-top: 10px">
+                @String.Format("{0:dd MMMM yyyy}", @ViewBag.RndDate)
+            </div>
+        </div>
+        <div class="col-md-10">
+            <h5 style="font-weight: bold">Round @ViewBag.RndNumber</h5>
+            <h5>Gross Round Points : <text style="border: 1px solid silver; padding-left:10px; padding-right:10px; text-align:center; border-radius: 5px">@Model.TotalPoints Pts</text></h5>
+            <h5 style="font-weight: bold">
+                Net Round Points : <text style="border: 2px solid black; padding-left:10px; padding-right:10px; text-align:center;
+                border-radius: 5px; font-weight: bold; background-color: palegreen; margin-left: 5px">@ViewBag.NetPoints Pts</text>
+            </h5>
+        </div>
+    </div>
+
+    @{ var holeScore = ViewBag.CurrentScore; }
+    @{ var holePts = ViewBag.RndPoints; }
+    <div class="row">
+        <div class="col-md-12">
+            <a href="#"><img id="cardImage" src="@ViewBag.CardImage" style="height: 50px" title="View Uploaded Score Card" /></a>
+            <div class="md-10">
+                @if (Model.CourseID == ViewBag.PlayerHomeID)
+            {
+                    <label style="font-weight: bold; color: darkgreen; margin-right: 10px; margin-bottom: 10px; margin-top:10px">@ViewBag.CourseName - @Model.TeeColour Tees <span class="glyphicon glyphicon-home" aria-hidden="true"></span></label>
+                }
+                else
+                {
+                    <label style="font-weight: bold; color: darkgreen; margin-right: 10px; margin-bottom: 10px; margin-top: 10px">@ViewBag.CourseName - @Model.TeeColour Tees</label>
+                }
+
+
+                @{if (Model.TeeColour == "Yellow")
+            {
+                        <span style="background-color: #f7de54; border: 1px solid gray; border-radius: 5px; text-align: center; padding: 5px">
+                            PAR @ViewBag.CoursePar
+                            SSS @Model.SSS
+                        </span>
+                    }
+                    else if (Model.TeeColour == "Red")
+                    {
+                        <span style="background-color: #f66868; color:white; border: 1px solid gray; border-radius: 5px; text-align: center; padding: 5px">
+                            PAR @ViewBag.CoursePar
+                            SSS @Model.SSS
+                        </span>
+                    }
+                    else
+                    {
+                        <span style="border: 1px solid gray; border-radius: 5px; text-align: center; padding: 5px">
+                            PAR @ViewBag.CoursePar
+                            SSS @Model.SSS
+                        </span>
+                    }
+                }
+            </div>
+
+
+            <table class="table table-bordered table-condensed table-responsive" style="max-width: 600px; margin-bottom: 20px; margin-top: 10px">
+                <tr style="font-style: italic; text-align: center; background-color: whitesmoke">
+                    <th style="text-align: center">
+                        Hole
+                    </th>
+                    <th class="hidden-xs" style="text-align: center; background-color: @ViewBag.TeeColour">
+                        Yards
+                    </th>
+                    <th class="visible-xs" style="text-align: center; background-color: @ViewBag.TeeColour">
+                        Yrds
+                    </th>
+                    <th style="text-align: center">
+                        Par
+                    </th>
+                    <th style="text-align: center">
+                        SI
+                    </th>
+                    <th style="text-align: center">
+                        Score
+                    </th>
+                    <th class="hidden-xs" style="text-align: center">
+                        Points
+                    </th>
+                    <th class="visible-xs" style="text-align: center">
+                        Pts
+                    </th>
+                </tr>
+                @foreach (var item in ViewBag.scoreCard)
+            {
+
+                if (item.HoleNumber == 10)
+                {
+                        <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-top: 2px solid black; border-bottom: 2px solid black">
+                            <td style="text-align: Center">
+                                Out
+                            </td>
+                            <td style="text-align: Center; background-color: @ViewBag.TeeColour">
+                                @ViewBag.FrontYrds
+                            </td>
+                            <td style="text-align: Center">
+                                @ViewBag.FrontPar
+                            </td>
+                            <td style="text-align: Center"></td>
+                            <td id="frontScoreTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@ViewBag.FrontScore</td>
+                            <td id="frontPointsTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@holePts.OutPoints</td>
+                        </tr>
+
+                    };
+                    <tr class="ScoreCard">
+                        <td style="text-align: center; font-weight: bold">
+                            @item.HoleNumber
+                        </td>
+                        <td style="text-align: Center; background-color: @ViewBag.TeeColour">
+                            @item.HoleYrds
+                        </td>
+                        <td class="par" style="text-align: Center">
+                            @item.HolePar
+                        </td>
+                        <td style="text-align: Center">
+                            @item.HoleSI
+                        </td>
+                        @if (item.HoleNumber < 10)
+                {
+                            <td style="text-align: center; font: bold 15px Comic Sans MS; color: navy">
+                                <label class="frontScore">
+                                    @if (item.HoleNumber == 1)
+                                    {
+                                        @holeScore.Hole1
+                                    }
+                                    @if (item.HoleNumber == 2)
+                                    {
+                                        @holeScore.Hole2
+                                    }
+                                    @if (item.HoleNumber == 3)
+                                    {
+                                        @holeScore.Hole3
+                                    }
+                                    @if (item.HoleNumber == 4)
+                                    {
+                                        @holeScore.Hole4
+                                    }
+                                    @if (item.HoleNumber == 5)
+                                    {
+                                        @holeScore.Hole5
+                                    }
+                                    @if (item.HoleNumber == 6)
+                                    {
+                                        @holeScore.Hole6
+                                    }
+                                    @if (item.HoleNumber == 7)
+                                    {
+                                        @holeScore.Hole7
+                                    }
+                                    @if (item.HoleNumber == 8)
+                                    {
+                                        @holeScore.Hole8
+                                    }
+                                    @if (item.HoleNumber == 9)
+                                    {
+                                        @holeScore.Hole9
+                                    }
+                                </label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align: center; font: bold 15px Comic Sans MS; color: navy">
+                                <label class="backScore">
+                                    @if (item.HoleNumber == 10)
+                                    {
+                                        @holeScore.Hole10
+                                    }
+                                    @if (item.HoleNumber == 11)
+                                    {
+                                        @holeScore.Hole11
+                                    }
+                                    @if (item.HoleNumber == 12)
+                                    {
+                                        @holeScore.Hole12
+                                    }
+                                    @if (item.HoleNumber == 13)
+                                    {
+                                        @holeScore.Hole13
+                                    }
+                                    @if (item.HoleNumber == 14)
+                                    {
+                                        @holeScore.Hole14
+                                    }
+                                    @if (item.HoleNumber == 15)
+                                    {
+                                        @holeScore.Hole15
+                                    }
+                                    @if (item.HoleNumber == 16)
+                                    {
+                                        @holeScore.Hole16
+                                    }
+                                    @if (item.HoleNumber == 17)
+                                    {
+                                        @holeScore.Hole17
+                                    }
+                                    @if (item.HoleNumber == 18)
+                                    {
+                                        @holeScore.Hole18
+                                    }
+                                </label>
+                            </td>
+                        }
+
+                        @if (item.HoleNumber < 10)
+                {
+                            <td class="frontPoints" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">
+                                @if (item.HoleNumber == 1)
+                                {
+                                    @holePts.Hole1
+                                }
+                                @if (item.HoleNumber == 2)
+                                {
+                                    @holePts.Hole2
+                                }
+                                @if (item.HoleNumber == 3)
+                                {
+                                    @holePts.Hole3
+                                }
+                                @if (item.HoleNumber == 4)
+                                {
+                                    @holePts.Hole4
+                                }
+                                @if (item.HoleNumber == 5)
+                                {
+                                    @holePts.Hole5
+                                }
+                                @if (item.HoleNumber == 6)
+                                {
+                                    @holePts.Hole6
+                                }
+                                @if (item.HoleNumber == 7)
+                                {
+                                    @holePts.Hole7
+                                }
+                                @if (item.HoleNumber == 8)
+                                {
+                                    @holePts.Hole8
+                                }
+                                @if (item.HoleNumber == 9)
+                                {
+                                    @holePts.Hole9
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="backPoints" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">
+                                @if (item.HoleNumber == 10)
+                                {
+                                    @holePts.Hole10
+                                }
+                                @if (item.HoleNumber == 11)
+                                {
+                                    @holePts.Hole11
+                                }
+                                @if (item.HoleNumber == 12)
+                                {
+                                    @holePts.Hole12
+                                }
+                                @if (item.HoleNumber == 13)
+                                {
+                                    @holePts.Hole13
+                                }
+                                @if (item.HoleNumber == 14)
+                                {
+                                    @holePts.Hole14
+                                }
+                                @if (item.HoleNumber == 15)
+                                {
+                                    @holePts.Hole15
+                                }
+                                @if (item.HoleNumber == 16)
+                                {
+                                    @holePts.Hole16
+                                }
+                                @if (item.HoleNumber == 17)
+                                {
+                                    @holePts.Hole17
+                                }
+                                @if (item.HoleNumber == 18)
+                                {
+                                    @holePts.Hole18
+                                }
+                            </td>
+                        }
+
+                    </tr>
+                }
+
+                <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-top: 2px solid black">
+                    <td style="text-align: Center">
+                        In
+                    </td>
+                    <td style="text-align: Center; background-color: @ViewBag.TeeColour">
+                        @ViewBag.BackYrds
+                    </td>
+                    <td style="text-align: Center">
+                        @ViewBag.BackPar
+                    </td>
+                    <td></td>
+                    <td id="backScoreTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@ViewBag.BackScore</td>
+                    <td id="backPointsTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@holePts.InPoints</td>
+
+                </tr>
+                <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-color: gray ">
+                    <td style="text-align: Center">
+                        Out
+                    </td>
+                    <td style="text-align: Center; background-color: @ViewBag.TeeColour">
+                        @ViewBag.FrontYrds
+                    </td>
+                    <td style="text-align: Center">
+                        @ViewBag.FrontPar
+                    </td>
+                    <td style="text-align: Center"></td>
+                    <td id="outScoreTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@ViewBag.FrontScore</td>
+                    <td id="outPointsTotal" style="text-align: center; font: bold 15px Comic Sans MS; color: navy">@holePts.OutPoints</td>
+
+                </tr>
+                <tr class="ScoreCard" style="font-weight: bold; background-color: whitesmoke; border-bottom: 2px solid black">
+                    <td style="text-align: Center">
+                        Total
+                    </td>
+                    <td style="text-align: Center; background-color: @ViewBag.TeeColour">
+                        @ViewBag.TotalYrds
+                    </td>
+                    <td style="text-align: Center">
+                        @ViewBag.TotalPar
+                    </td>
+                    <td style="text-align: Center"></td>
+                    <td id="totalScore" style="text-align: center; font: bold 15px Comic Sans MS; color: navy; background-color: palegreen">@ViewBag.TotalScore</td>
+                    <td id="totalPoints" style="text-align: center; font: bold 15px Comic Sans MS; color: navy; background-color: palegreen">@holePts.TotalPoints</td>
+
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-sm btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+</div>
+
+

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<TigerLineScores.Models.ScoreCardView>
+
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+   
+</style>
+
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 320px">MY PENDING SCORE CARDS</h4>
+    <br />
+    <H4 style="color: darkgreen; font-weight: bold">@ViewBag.CompName</H4>
+    <H4>
+        <img id="uPhoto" src="@ViewBag.PlayerPhoto" style="width: 60px" />
+        @ViewBag.PlayerName
+    </H4>
+    <H5> Current Handicap : @ViewBag.CurrentHCap</H5>
+    <br />
+
+    <table class="table table-bordered" id="maintable" style="max-width: 500px; margin-bottom: 30px">
+        <tr style="background-color: whitesmoke">
+            <th>
+                Round Date
+            </th>
+            <th>
+                Course
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td onclick="location.href = '@(Url.Action("Edit", "ScoreCardImages", new { imageID = item.ImageID }))'">
+                    @Html.DisplayFor(modelItem => item.rndDate)
+                </td>
+                <td onclick="location.href = '@(Url.Action("Edit", "ScoreCardImages", new { imageID = item.ImageID }))'">
+                    @Html.DisplayFor(modelItem => item.courseName)
+                </td>
+                <td class="hidden-xs">
+                  <a href="@Url.Action("Delete","ScoreCardImages", new { imageID = item.ImageID, userID = item.UserID, compID = 1 })" class="confirm" alt="Confirm Delete" style="color: red"
+                     title="Remove Pending Score Card?"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                      Remove
+                  </a>
+                </td>
+                <td class="visible-xs">
+                    <a href="@Url.Action("Delete","ScoreCardImages", new { imageID = item.ImageID, userID = item.UserID, compID = 1 })" class="confirm" alt="Confirm Delete" style="color: red"
+                       title="Remove Pending Score Card?">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+    <br/>
+</div>
+
+

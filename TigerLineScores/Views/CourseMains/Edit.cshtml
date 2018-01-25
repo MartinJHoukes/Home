@@ -5,69 +5,66 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px">EDIT COURSE DETAILS</h4>
+    <br />
 
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">COURSES</h4>
-</div>
-<br />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Golf Course</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.CourseID)
+        <div class="form-horizontal">
+            <h4>Golf Course</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.CourseID)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ClubName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ClubName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ClubName, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.ClubName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ClubName, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 300px" } })
+                    @Html.ValidationMessageFor(model => model.ClubName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.WhiteSSS, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.WhiteSSS, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 100px" } })
+                    @Html.ValidationMessageFor(model => model.WhiteSSS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.YellowSSS, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.YellowSSS, new { htmlAttributes = new { @class = "form-control", @style = "background-color: #f7de54; max-width: 100px" } })
+                    @Html.ValidationMessageFor(model => model.YellowSSS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RedSSS, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RedSSS, new { htmlAttributes = new { @class = "form-control", @style = "background-color: #f66868; max-width: 100px" } })
+                    @Html.ValidationMessageFor(model => model.RedSSS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save Details" class="btn btn-primary" />
+                </div>
             </div>
         </div>
+        <br /><br />
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.WhiteSSS, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.WhiteSSS, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.WhiteSSS, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.YellowSSS, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.YellowSSS, new { htmlAttributes = new { @class = "form-control", @style = "background-color: #f7de54" } })
-                @Html.ValidationMessageFor(model => model.YellowSSS, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RedSSS, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RedSSS, new { htmlAttributes = new { @class = "form-control", @style = "background-color: #f66868" } })
-                @Html.ValidationMessageFor(model => model.RedSSS, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save Details" class="btn btn-primary" />
-            </div>
-        </div>
+    <div>
+        @Html.ActionLink("Back to Course List", "Index", null, new { @class = "btn btn-default" })
     </div>
-    <br /><br />
-}
-
-<div>
-    @Html.ActionLink("Back to Course List", "Index", null, new { @class = "btn btn-default" })
+    <br /><hr />
 </div>
-<br /><br /><br /><hr />
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>

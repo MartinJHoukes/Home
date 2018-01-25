@@ -1,0 +1,257 @@
+﻿@model IEnumerable<TigerLineScores.Models.BestScoreView>
+
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
+<div class="col-lg-10">
+    <h4 style="color: darkgreen; font-weight: bold">@ViewBag.Course</h4>
+    <br />
+    <div>
+        <table class="table table-bordered" style="margin-bottom: 20px; max-width: 1200px" id="maintable">
+            <tr style="color:navy; background-color: whitesmoke">
+                <th>
+                </th>
+                <th style="text-align: center">
+                    Player
+                </th>
+                <th style="text-align: center">
+                    Rounds
+                </th>
+                <th style="text-align: center">
+                    Net
+                </th>
+                <th>
+                </th>
+                <th class="hidden-xs" style="color: black; text-align: right">
+                    Hole
+                </th>
+                @for (int i = 1; i < 19; i++)
+                {
+                    <th class="hidden-xs" style="text-align: center; color: black; max-width: 5px">
+                        @i.ToString()
+                    </th>
+                }
+            </tr>
+            <tr class="hidden-xs" style="color:navy; background-color: whitesmoke; color: darkgreen">
+                <th>
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+                <th style="text-align: right">
+                    Par
+                </th>
+                @foreach (var par in ViewBag.ParList)
+                {
+                    <th class="holePar hidden-xs" style="text-align: center; max-width: 5px">
+                        @par
+                    </th>
+                }
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                if (item.currentPosition == 1)
+                {
+                    <tr style="border: 3px ridge yellow; background-color: azure; font-weight:bold"
+                        onclick="location.href = '@(Url.Action("EclecticPlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID, courseID = ViewBag.CourseID }))'" title="View Rounds">
+                        <td style="font-weight: bold; text-align: center; vertical-align: middle">
+                            <img src="~/Images/Star1.jpeg" style="width: 30px" />
+                        </td>
+                        <td style="vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.playerName)
+                        </td>
+                        <td style="vertical-align: middle; text-align: center">
+                            @Html.DisplayFor(modelItem => item.NumberOfRnds)
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.ParScore)
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.TotalScore)
+                        </td>
+                        <td class="hidden-xs" style="border-bottom: none; border-top: none"></td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole1)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole2)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole3)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole4)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole5)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole6)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole7)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole8)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole9)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole10)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole11)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole12)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole13)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole14)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole15)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole16)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole17)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole18)
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr onclick="location.href = '@(Url.Action("EclecticPlayerRnds", "PlayerCompList", new { compID = ViewBag.CompID, compPlayerID = item.compPlayerID, courseID = ViewBag.CourseID }))'" title="View Rounds">
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.currentPosition)
+                        </td>
+                        <td style="vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.playerName)
+                        </td>
+                        <td style="vertical-align: middle; text-align: center">
+                            @Html.DisplayFor(modelItem => item.NumberOfRnds)
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.ParScore)
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.TotalScore)
+                        </td>
+                        <td class="hidden-xs" style="border-bottom: none; border-top: none"></td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole1)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole2)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole3)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole4)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole5)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole6)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole7)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole8)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole9)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole10)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole11)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole12)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole13)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole14)
+                        </td>
+                        <td class="bestScore hidden-xs"  style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole15)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole16)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole17)
+                        </td>
+                        <td class="bestScore hidden-xs" style="text-align: center; vertical-align: middle">
+                            @Html.DisplayFor(modelItem => item.Hole18)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    </div>
+
+    <br />
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        formatbestScore()
+    });
+</script>
+
+<script type="text/javascript">
+    function formatbestScore() {
+        // iterate through each td based on class and format the score depending on par, birdie , bogey etc..
+        $('.bestScore').each(function () {
+
+            var col = $(this).closest('td').index();
+            var holePar = parseInt(document.getElementById("maintable").rows[1].cells.item(col).innerHTML);
+            var holeScore = parseInt($(this).text());
+
+            if (holeScore !== 0) {
+                if (holeScore == holePar) {
+                    $(this).addClass('ScorePar');
+                }
+                else if (holePar - holeScore == 1) {
+                    $(this).addClass('ScoreBirdie');
+                }
+                else if (holePar - holeScore == 2) {
+                    $(this).addClass('ScoreEagle');
+                }
+                else if (holePar - holeScore == -1) {
+                    $(this).addClass('ScoreBogey');
+                }
+                else if (holePar - holeScore <= -2) {
+                    $(this).addClass('ScoreDblBogey');
+                }
+            }
+        })
+    };
+</script>

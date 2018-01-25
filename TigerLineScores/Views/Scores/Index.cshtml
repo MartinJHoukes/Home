@@ -1,100 +1,128 @@
 ﻿@model IEnumerable<TigerLineScores.Models.CompScore>
 
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
 @{
     ViewBag.Title = "Rounds Submitted";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px">PLAYER ROUNDS</h4>
+    <br />
 
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">ROUNDS SUBMITTED</h4>
-</div>
-<br />
+    <H4>@ViewBag.CompName</H4>
+    <H4 style="font-weight: bold">@ViewBag.PlayerName</H4>
+    <br />
 
-<H4>@ViewBag.CompName</H4>
-<H4>@ViewBag.PlayerName</H4>
-<br />
-
-<table class="table table-bordered">
-    <tr>
-        <th class="tableHeader">
-            Round
-        </th>
-        <th class="tableHeader">
-            Date
-        </th>
-        <th class="tableHeader">
-            Course
-        </th>
-        <th class="tableHeader">
-            Tee Colour
-        </th>
-        <th class="tableHeader">
-            Score
-        </th>
-        <th class="tableHeader">
-            NET Points
-        </th>
-        <th></th>
-    </tr>
-
-    @{int row = 0;}
-    @foreach (var item in ViewBag.RndSummary)
-    {
-        { row += 1; }
-
+    <table class="table table-bordered" id="maintable">
         <tr>
-            <td style="text-align:center">
-                @row
-            </td>
-            <td>
-                @String.Format("{0:dd MMMM yyyy}", item.RndDate)
-            </td>
-            <td>
-                @item.ClubName
-            </td>
-
-            @{string teecolor = item.TeeColour;}
-            @switch (teecolor)
-            {
-                case "Yellow":
-                    <td class="yellow-back" style="text-align:center">
-                        @teecolor
-                    </td>
-                    break;
-                case "Red":
-                    <td class="red-back" style="text-align:center">
-                        @teecolor
-                    </td>
-                    break;
-                default:
-                    <td style="text-align:center">
-                        @teecolor
-                    </td>
-                    break;
-            }
-            <td style="text-align: center; font-weight: bold">
-                @item.RndScore
-            </td>
-            <td style="text-align: center; font-weight: bold">
-                @item.NETRndPoints
-            </td>
-            <td>
-                <a href="@Url.Action("Edit", new { CompScoreID=item.CompScoreID })" class="btn btn-xs btn-default">
-                    Edit Round
-                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                </a>
-                <a href="@Url.Action("Delete", new { id=item.CompScoreID })" class="btn btn-xs btn-danger">
-                    Remove Round
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </a>
-            </td>
+            <th class="tableHeader">
+                Round
+            </th>
+            <th class="tableHeader">
+                Date
+            </th>
+            <th class="tableHeader">
+                Course
+            </th>
+            <th class="tableHeader">
+                Tee Colour
+            </th>
+            <th class="tableHeader">
+                Score
+            </th>
+            <th class="tableHeader">
+                NET Points
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
 
+        @{int row = 0;}
+        @foreach (var item in ViewBag.RndSummary)
+        {
+            { row += 1; }
+            if (row > 10) // SCORE DOES NOT COUNT SO CROSS THROUGH
+            {
+                <tr style="text-decoration: line-through; background-color: whitesmoke">
+                    <td style="text-align:center" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @item.RndNumber
+                    </td>
+                    <td onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @String.Format("{0:dd MMMM yyyy}", item.RndDate)
+                    </td>
+                    <td onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @item.ClubName
+                    </td>
+                    <td style="text-align:center">
+                        @item.TeeColour
+                    </td>
+                    <td style="text-align: center; font-weight: bold" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @item.RndScore
+                    </td>
+                    <td style="text-align: center; font-weight: bold" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @item.NETRndPoints
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DeleteRnd", new { compScoreID=item.CompScoreID })" class="confirm" alt="Confirm Delete" style="color: red" title="Remove Round">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td style="text-align:center" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @item.RndNumber
+                    </td>
+                    <td onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @String.Format("{0:dd MMMM yyyy}", item.RndDate)
+                    </td>
+                    <td onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @item.ClubName
+                    </td>
 
+                    @{string teecolor = item.TeeColour;}
+                    @switch (teecolor)
+                    {
+                        case "Yellow":
+                            <td class="yellow-back" style="text-align:center" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                                @teecolor
+                            </td>
+                            break;
+                        case "Red":
+                            <td class="red-back" style="text-align:center" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                                @teecolor
+                            </td>
+                            break;
+                        default:
+                            <td style="text-align:center" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                                @teecolor
+                            </td>
+                            break;
+                    }
+                    <td style="text-align: center; font-weight: bold" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @item.RndScore
+                    </td>
+                    <td style="text-align: center; font-weight: bold" onclick="location.href = '@(Url.Action("Edit", new { CompScoreID=item.CompScoreID }))'" title="Edit Round">
+                        @item.NETRndPoints
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DeleteRnd", new { compScoreID=item.CompScoreID })" class="confirm" alt="Confirm Delete" style="color: red" title="Remove Round">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+                            }
+
+                        }
+    </table>
     <div class="col-md-10">
         @Html.ActionLink("Back to List of Players", "Index", "Players", new { ViewBag.CompID }, new { @Class = "btn btn-default", style = "margin-top: 20px; margin-bottom: 50px" })
     </div>
+</div>

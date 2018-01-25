@@ -14,6 +14,7 @@
           <Property Name="DateStart" Type="date" />
           <Property Name="DateEnd" Type="date" />
           <Property Name="Format" Type="varchar" MaxLength="50" />
+          <Property Name="LeaguePosUpdate" Type="date" />
         </EntityType>
         <EntityType Name="CompPlayer">
           <Key>
@@ -22,6 +23,9 @@
           <Property Name="CompPlayerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CompID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CurrentPos" Type="int" />
+          <Property Name="WeekPos" Type="int" />
+          <Property Name="MovementIcon" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CompScore">
           <Key>
@@ -54,6 +58,7 @@
           <Property Name="TotalPoints" Type="int" />
           <Property Name="RndDate" Type="date" />
           <Property Name="TeeColour" Type="varchar" MaxLength="50" />
+          <Property Name="ImageID" Type="int" />
         </EntityType>
         <EntityType Name="CourseDetail">
           <Key>
@@ -79,6 +84,18 @@
           <Property Name="WhiteSSS" Type="int" />
           <Property Name="YellowSSS" Type="int" />
           <Property Name="RedSSS" Type="int" />
+          <Property Name="ImagePath" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="MessageID" />
+          </Key>
+          <Property Name="MessageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SentByID" Type="int" Nullable="false" />
+          <Property Name="ReceivedByID" Type="int" Nullable="false" />
+          <Property Name="MessageText" Type="varchar(max)" Nullable="false" />
+          <Property Name="DateSent" Type="datetime" Nullable="false" />
+          <Property Name="MessageRead" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Profile">
           <Key>
@@ -91,6 +108,33 @@
           <Property Name="HomeClubID" Type="int" />
           <Property Name="Handicap" Type="decimal" Precision="3" Scale="1" />
           <Property Name="Photo" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="ScoreCardImage">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompID" Type="int" Nullable="false" />
+          <Property Name="CardImage" Type="varchar" MaxLength="300" />
+          <Property Name="Processed" Type="bit" />
+          <Property Name="Note" Type="varchar(max)" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="RoundDate" Type="date" />
+          <Property Name="CourseID" Type="int" />
+          <Property Name="TeeColour" Type="varchar" MaxLength="50" />
+          <Property Name="SSS" Type="int" />
+        </EntityType>
+        <EntityType Name="UpcomingRnds">
+          <Key>
+            <PropertyRef Name="RndID" />
+          </Key>
+          <Property Name="RndID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompPlayerID" Type="int" Nullable="false" />
+          <Property Name="CompID" Type="int" Nullable="false" />
+          <Property Name="RndDate" Type="date" />
+          <Property Name="RndType" Type="varchar" MaxLength="50" />
+          <Property Name="CourseID" Type="int" Nullable="false" />
+          <Property Name="Note" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -108,7 +152,10 @@
           <EntitySet Name="CompScore" EntityType="Self.CompScore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseDetail" EntityType="Self.CourseDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseMain" EntityType="Self.CourseMain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Profile" EntityType="Self.Profile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScoreCardImage" EntityType="Self.ScoreCardImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UpcomingRnds" EntityType="Self.UpcomingRnds" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -133,6 +180,9 @@
           <EntitySet Name="CompMains" EntityType="TigerLineScoresModel.CompMain" />
           <EntitySet Name="CompPlayers" EntityType="TigerLineScoresModel.CompPlayer" />
           <EntitySet Name="CompScores" EntityType="TigerLineScoresModel.CompScore" />
+          <EntitySet Name="ScoreCardImages" EntityType="TigerLineScoresModel.ScoreCardImage" />
+          <EntitySet Name="UpcomingRnds" EntityType="TigerLineScoresModel.UpcomingRnd" />
+          <EntitySet Name="Messages" EntityType="TigerLineScoresModel.Message" />
         </EntityContainer>
         <EntityType Name="Profile">
           <Key>
@@ -170,6 +220,7 @@
           <Property Name="WhiteSSS" Type="Int32" />
           <Property Name="YellowSSS" Type="Int32" />
           <Property Name="RedSSS" Type="Int32" />
+          <Property Name="ImagePath" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CompMain">
           <Key>
@@ -180,6 +231,7 @@
           <Property Name="DateStart" Type="DateTime" Precision="0" />
           <Property Name="DateEnd" Type="DateTime" Precision="0" />
           <Property Name="Format" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LeaguePosUpdate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="CompPlayer">
           <Key>
@@ -188,6 +240,9 @@
           <Property Name="CompPlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CompID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CurrentPos" Type="Int32" />
+          <Property Name="WeekPos" Type="Int32" />
+          <Property Name="MovementIcon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CompScore">
           <Key>
@@ -220,6 +275,45 @@
           <Property Name="TotalPoints" Type="Int32" />
           <Property Name="RndDate" Type="DateTime" Precision="0" />
           <Property Name="TeeColour" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ImageID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ScoreCardImage">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompID" Type="Int32" Nullable="false" />
+          <Property Name="CardImage" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Processed" Type="Boolean" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="RoundDate" Type="DateTime" Precision="0" />
+          <Property Name="CourseID" Type="Int32" />
+          <Property Name="TeeColour" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SSS" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UpcomingRnd">
+          <Key>
+            <PropertyRef Name="RndID" />
+          </Key>
+          <Property Name="RndID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompPlayerID" Type="Int32" Nullable="false" />
+          <Property Name="CompID" Type="Int32" Nullable="false" />
+          <Property Name="RndDate" Type="DateTime" Precision="0" />
+          <Property Name="RndType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="MessageID" />
+          </Key>
+          <Property Name="MessageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SentByID" Type="Int32" Nullable="false" />
+          <Property Name="ReceivedByID" Type="Int32" Nullable="false" />
+          <Property Name="MessageText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateSent" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MessageRead" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -270,6 +364,7 @@
           <EntitySetMapping Name="CourseMains">
             <EntityTypeMapping TypeName="TigerLineScoresModel.CourseMain">
               <MappingFragment StoreEntitySet="CourseMain">
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
                 <ScalarProperty Name="RedSSS" ColumnName="RedSSS" />
                 <ScalarProperty Name="YellowSSS" ColumnName="YellowSSS" />
                 <ScalarProperty Name="WhiteSSS" ColumnName="WhiteSSS" />
@@ -281,6 +376,7 @@
           <EntitySetMapping Name="CompMains">
             <EntityTypeMapping TypeName="TigerLineScoresModel.CompMain">
               <MappingFragment StoreEntitySet="CompMain">
+                <ScalarProperty Name="LeaguePosUpdate" ColumnName="LeaguePosUpdate" />
                 <ScalarProperty Name="Format" ColumnName="Format" />
                 <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
                 <ScalarProperty Name="DateStart" ColumnName="DateStart" />
@@ -292,6 +388,9 @@
           <EntitySetMapping Name="CompPlayers">
             <EntityTypeMapping TypeName="TigerLineScoresModel.CompPlayer">
               <MappingFragment StoreEntitySet="CompPlayer">
+                <ScalarProperty Name="MovementIcon" ColumnName="MovementIcon" />
+                <ScalarProperty Name="WeekPos" ColumnName="WeekPos" />
+                <ScalarProperty Name="CurrentPos" ColumnName="CurrentPos" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CompID" ColumnName="CompID" />
                 <ScalarProperty Name="CompPlayerID" ColumnName="CompPlayerID" />
@@ -301,6 +400,7 @@
           <EntitySetMapping Name="CompScores">
             <EntityTypeMapping TypeName="TigerLineScoresModel.CompScore">
               <MappingFragment StoreEntitySet="CompScore">
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
                 <ScalarProperty Name="TeeColour" ColumnName="TeeColour" />
                 <ScalarProperty Name="RndDate" ColumnName="RndDate" />
                 <ScalarProperty Name="TotalPoints" ColumnName="TotalPoints" />
@@ -328,6 +428,47 @@
                 <ScalarProperty Name="CompPlayerID" ColumnName="CompPlayerID" />
                 <ScalarProperty Name="CompID" ColumnName="CompID" />
                 <ScalarProperty Name="CompScoreID" ColumnName="CompScoreID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScoreCardImages">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.ScoreCardImage">
+              <MappingFragment StoreEntitySet="ScoreCardImage">
+                <ScalarProperty Name="SSS" ColumnName="SSS" />
+                <ScalarProperty Name="TeeColour" ColumnName="TeeColour" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+                <ScalarProperty Name="RoundDate" ColumnName="RoundDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Processed" ColumnName="Processed" />
+                <ScalarProperty Name="CardImage" ColumnName="CardImage" />
+                <ScalarProperty Name="CompID" ColumnName="CompID" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UpcomingRnds">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.UpcomingRnd">
+              <MappingFragment StoreEntitySet="UpcomingRnds">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+                <ScalarProperty Name="RndType" ColumnName="RndType" />
+                <ScalarProperty Name="RndDate" ColumnName="RndDate" />
+                <ScalarProperty Name="CompID" ColumnName="CompID" />
+                <ScalarProperty Name="CompPlayerID" ColumnName="CompPlayerID" />
+                <ScalarProperty Name="RndID" ColumnName="RndID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="TigerLineScoresModel.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="MessageRead" ColumnName="MessageRead" />
+                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
+                <ScalarProperty Name="MessageText" ColumnName="MessageText" />
+                <ScalarProperty Name="ReceivedByID" ColumnName="ReceivedByID" />
+                <ScalarProperty Name="SentByID" ColumnName="SentByID" />
+                <ScalarProperty Name="MessageID" ColumnName="MessageID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

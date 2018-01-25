@@ -1,32 +1,54 @@
 ﻿
-<div class="col-md-2">
-    @if (Session["UserName"] != null)
-    {
-        <div>
-            <img class="img-rounded img-responsive" style="width: 80px; margin-left: 10px; margin-bottom: 10px; box-shadow: 5px 5px 5px grey; border: 1px solid grey" src="@Session["UserPhoto"]" />
-        </div>
-        <div style="color: darkgreen; font-weight: bold; font-size:14px; padding-left: 10px">
-            @Session["UserName"]
-        <img style="width: 25px" src="~/Images/tick.png" />
-    </div><br />
-    }
+<div class="col-md-12">
+    <div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px; box-shadow: 3px 3px 3px gray">
+        <h3 class="col-md-offset-2" style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px ; float: left">TIGER LINE SCORES</h3>
+        <img class="hidden-xs" style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" /><br/>
+        <h4 style="clear: both"></h4>
+        @if (Session["UserName"] != null)
+        {
+            <div class="visible-xs" style="float:left">
+                <img class="img-rounded img-responsive" style="width: 45px; margin-left: 10px; margin-right: 10px" src="@Session["UserPhoto"]" />
+            </div>
+            <div class="visible-xs" style="color: darkgreen; font-size: 12px; font-style: italic">
+                 @Session["UserName"]
+            </div>
+            <img class="visible-xs" style="width: 20px" src="~/Images/tick.png" />
+            <div class="visible-xs" style="clear: both"></div>
+        }
+    </div>
+    <br />
+</div>
 
-    <ul class="nav nav-pills nav-stacked" role="tablist">
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("Competitions", "Index", "PlayerCompList")</li>
-        <li>
-            @Html.ActionLink(
-                                linkText: "Profile",
-                                actionName: "Edit",
-                                controllerName: "Profiles")
-        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
 
-        
+<div class="col-md-2 hidden-xs" style="text-align: left">
+    <ul class="nav navbar-btn" role="tablist" >
+        <li style="border: 1px solid silver; border-radius: 5px">
+            <a href="@Url.Action("Index", "Home")" style="color: navy">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home 
+            </a>
+        </li>
+        <li style="border: 1px solid silver; border-radius: 5px">
+            <a href="@Url.Action("Index", "PlayerCompList")" style="color: navy">
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Competitions 
+            </a>
+        </li>
+        <li style="border: 1px solid silver; border-radius: 5px">
+            <a href="@Url.Action("Edit", "Profiles")" style="color: navy">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile
+            </a>
+        </li>
+        <li style="border: 1px solid silver; border-radius: 5px">
+            <a href="@Url.Action("Logout", "Home")" style="color: navy">
+                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Log Out
+            </a>
+        </li>
+
         @if (Convert.ToBoolean(Session["Admin"]))
             {
             <li role="separator" class="divider"></li>
-            <li class="dropdown">
-                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color: red" aria-haspopup="true" aria-expanded="false">Admin Options <span class="caret"></span></a>
+            <li class="dropdown" style="border: 1px solid silver; border-radius: 5px">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color: red" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Admin <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>@Html.ActionLink("Current Users", "Index", "Users")</li>
                     <li>@Html.ActionLink("Courses", "Index", "CourseMains")</li>
@@ -35,4 +57,73 @@
             </li>
             }
     </ul>
+    <br/>
+    @if (Session["UserName"] != null)
+    {
+        <div>
+            <img class="img-rounded img-responsive" style="width: 60px; margin-left: 10px; margin-bottom: 10px" src="@Session["UserPhoto"]" />
+        </div>
+        <div style="color: darkgreen; font-weight: bold; font-size:14px; padding-left: 10px">
+            @Session["UserName"]
+        </div>
+        <div style="color: black; font-size:12px; padding-left: 10px; font-style: italic">
+            Logged In <img style="width: 20px" src="~/Images/tick.png" />
+        </div><br />
+    }
 </div>
+
+<div class="visible-xs">
+    <ul>
+        <li style="list-style: none; display: inline">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-sm" style="border: 1px solid silver; border-radius: 5px; color: navy">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home
+            </a>
+        </li>
+        <li style="list-style: none; display: inline">
+            <a href="@Url.Action("Index", "PlayerCompList")" class="btn btn-default btn-sm" style="border: 1px solid silver; border-radius: 5px; color: navy">
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Competitions
+            </a>
+        </li>
+        <li style="list-style: none; display: inline">
+            <a href="@Url.Action("Edit", "Profiles")" class="btn btn-default btn-sm" style="border: 1px solid silver; border-radius: 5px; color: navy">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile
+            </a>
+        </li>
+        <li style="list-style: none; display: inline">
+            <a href="@Url.Action("Logout", "Home")" class="btn btn-default btn-sm" style="border: 1px solid silver; border-radius: 5px; color: navy">
+                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Log Out
+            </a>
+        </li>
+
+        @if (Convert.ToBoolean(Session["Admin"]))
+            {
+            <li class="dropdown" style="list-style: none; display: inline">
+                <a href="" class="dropdown-toggle btn btn-default btn-sm" style="border: 1px solid silver; border-radius: 5px; color: red" aria-haspopup="true" aria-expanded="false"  data-toggle="dropdown" role="button" >
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Admin <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" style="text-align: left">
+                    <li>@Html.ActionLink("Current Users", "Index", "Users")</li>
+                    <li>@Html.ActionLink("Courses", "Index", "CourseMains")</li>
+                    <li>@Html.ActionLink("Competitions - Setup", "Index", "CompMains")</li>
+                </ul>
+            </li>
+        }
+    </ul>
+    <br />
+    @if (Session["UserName"] != null)
+    {
+        <div class="hidden-xs">
+            <img class="img-rounded img-responsive" style="width: 60px; margin-left: 10px; margin-bottom: 10px" src="@Session["UserPhoto"]" />
+        </div>
+        <div class="hidden-xs" style="color: darkgreen; font-weight: bold; font-size:14px; padding-left: 10px">
+            @Session["UserName"]
+        </div>
+        <div class="hidden-xs" style="color: black; font-size:12px; padding-left: 10px; font-style: italic">
+            Logged In <img style="width: 20px" src="~/Images/tick.png" />
+        </div><br />
+    }
+</div>
+
+
+
+

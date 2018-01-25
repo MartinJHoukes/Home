@@ -6,37 +6,20 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+
 namespace TigerLineScores.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-
-    [MetadataType(typeof(ProfileMd))]
+    
     public partial class Profile
     {
         public int ProfileID { get; set; }
         public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Nullable<int> HomeClubID { get; set; }
         public Nullable<decimal> Handicap { get; set; }
         public string Photo { get; set; }
-    }
-
-    public class ProfileMd
-    {
-        [DisplayName("First Name")]
-        public string FirstName { get; set; }
-
-        [DisplayName("Last Name")]
-        public string LastName { get; set; }
-
-        [DisplayName("Home Club")]
         public Nullable<int> HomeClubID { get; set; }
-
-        [Range(0, 36, ErrorMessage = "Your handicap must be between 0 and 36")]
-        public Nullable<decimal> Handicap { get; set; }
     }
 }

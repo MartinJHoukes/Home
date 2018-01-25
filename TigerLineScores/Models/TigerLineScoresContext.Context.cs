@@ -32,5 +32,8 @@ namespace TigerLineScores.Models
         public virtual DbSet<CompMain> CompMains { get; set; }
         public virtual DbSet<CompPlayer> CompPlayers { get; set; }
         public virtual DbSet<CompScore> CompScores { get; set; }
+        public virtual DbSet<ScoreCardImage> ScoreCardImages { get; set; }
+        public virtual DbSet<UpcomingRnd> UpcomingRnds { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
     }
 }

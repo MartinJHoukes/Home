@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using TigerLineScores.Models;
+using TLScoresLibrary;
+
 
 namespace TigerLineScores.Controllers
 {
@@ -35,6 +37,16 @@ namespace TigerLineScores.Controllers
 
                 //Session Variable for User Photo from Profile table
                 Session["UserPhoto"] = GetUserPhoto(id);
+
+                //Session Variable for User Home Club ID from Profile table
+                Session["HomeClubID"] = GetHomeClubID(id);
+                
+                //Session Variable for the LATEST CompID
+                Session["CompID"] = GetLatestCompID();
+
+                //Session Variable for the Comp PlayerID
+                PlayerStats pStats = new PlayerStats();
+                Session["CompPlayerID"] = pStats.GetcompPlayerID(id, GetLatestCompID());
 
                 // Allow access to Edit User page to Admin User only
                 if (IsUserAdmin(id))
@@ -114,6 +126,37 @@ namespace TigerLineScores.Controllers
             }
 
             return uPhoto;
+        }
+
+        public int? GetHomeClubID(int uid)
+        {
+            var data = from u in db.Profiles
+                       where u.UserID == uid
+                       select u;
+
+            int? homeclubID = 0;
+            foreach (var check in data)
+            {
+                if (check.HomeClubID != null)
+                {
+                    homeclubID = check.HomeClubID;
+                }
+                
+            }
+            return homeclubID;
+        }
+
+        public int GetLatestCompID()
+        {
+            int compID = 0;
+            var allComps = from ac in db.CompMains
+                           select ac;
+
+            foreach (var item in allComps)
+            {
+                compID = item.CompID;
+            }
+            return compID;
         }
 
     }

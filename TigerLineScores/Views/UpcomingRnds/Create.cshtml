@@ -1,0 +1,113 @@
+﻿@model TigerLineScores.Models.UpcomingRnd
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 320px">NEW UPCOMING ROUND DETAIL</h4>
+    <br />
+    <H4 style="color: darkgreen; font-weight: bold">@ViewBag.CompName</H4>
+    <H4>
+        <img id="uPhoto" src="@ViewBag.PlayerPhoto" style="width: 60px" />
+        @ViewBag.PlayerName
+    </H4>
+    <H5> Current Handicap : @ViewBag.CurrentHCap</H5>
+    <br />
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.CompPlayerID)
+        @Html.HiddenFor(model => model.CompID)
+
+        <div class="form-horizontal">
+            <h4>Upcoming Round</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+          
+            <div class="form-group">
+                @Html.LabelFor(model => model.RndDate, htmlAttributes: new { @class = "control-label col-md-2 datepicker" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RndDate, new { htmlAttributes = new { @class = "form-control datapicker", id = "rndDate", @readonly = "true", style = "max-width: 280px; cursor: pointer; background-color: #fff" } })
+                    @Html.ValidationMessageFor(model => model.RndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+           <div class="form-group">
+                @Html.LabelFor(model => model.CourseID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CourseID, ViewBag.CourseList as SelectList, "Select a Course ..", new { id = "ddlcourse", @class = "form-control", style = "max-width: 280px" })
+                    @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RndType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.RndType, ViewBag.RndType as SelectList, new { id = "ddlrndType", @class = "form-control", style = "max-width: 280px" })
+                    @Html.ValidationMessageFor(model => model.RndType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10" style="margin-bottom: 30px">
+                    <button id="submit" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> Submit Upcoming Round
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@********* jQuery Date Pickers for Round Date ************@
+<script src="~/scripts/bootstrap-datepicker.min.js"></script>
+<script>
+    $(function () {
+        $("#rndDate").datepicker({
+            format: "dd MM yyyy",
+            autoclose: "true"
+        }).datepicker("setDate", new Date());
+    });
+</script>
+@*******************************************************************@
+
+@* *** Disable the Submit button until a course has been selected *** *@
+<script>
+    var button = document.getElementById('submit');
+    button.disabled = true;
+
+    $(function () {
+        $("#ddlcourse").change(checkcourse);
+    });
+</script>
+
+<script>
+    $(function () {
+       checkcourse()
+    });
+
+    function checkcourse() {
+        var cvalue = $('#ddlcourse option:selected').text();
+        if (cvalue == "Select a Course ..") {
+            button.disabled = true;
+            $('#ddlcourse').attr('style', 'background-color: white; color: grey');
+        } else {
+            button.disabled = false;
+            $('#ddlcourse').attr('style', 'background-color: green; color: white');
+        }
+    }
+
+</script>
+@*******************************************************************@

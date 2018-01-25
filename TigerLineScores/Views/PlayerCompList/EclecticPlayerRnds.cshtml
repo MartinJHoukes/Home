@@ -1,0 +1,220 @@
+﻿@model IEnumerable<TigerLineScores.Models.NetScoreView>
+
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Player Rounds";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 270px">PLAYER ROUNDS - ECLECTIC</h4>
+    <br />
+
+    <H4 style="color: darkgreen; font-weight: bold">@ViewBag.Course</H4>
+    <H4>
+        <img id="uPhoto" src="@ViewBag.Photo" style="width: 60px" />
+        @ViewBag.PlayerName
+    </H4>
+    <H5> Current Handicap : @ViewBag.CurrentHCap</H5>
+    <br />
+
+    <table class="table table-bordered" id="maintable" style="max-width: 1200px; margin-right: 20px">
+        <tr style="background-color: whitesmoke; color:navy; text-align: center">
+            <th class="hidden-xs">
+                Rnd
+            </th>
+            <th>
+                Date
+            </th>
+            <th >
+                Tee Colour
+            </th>
+            <th >
+                H'cap
+            </th>
+            <th >
+                Net Score
+            </th>
+            <th>
+            </th>
+            <th class="hidden-xs" style="color: black; text-align: right">
+                Hole
+            </th>
+            @for (int i = 1; i < 19; i++)
+            {
+                <th class="hidden-xs" style="text-align: center; color: black; max-width: 5px">
+                    @i.ToString()
+                </th>
+            }
+        </tr>
+        <tr class="hidden-xs" style="color:navy; background-color: whitesmoke; color: darkgreen; text-align: center">
+            <th class="hidden-xs">
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th style="text-align: right">
+                Par
+            </th>
+            @foreach (var par in ViewBag.ParList)
+            {
+                <th class="holePar hidden-xs" style="text-align: center">
+                    @par
+                </th>
+            }
+        </tr>
+
+        @{int row = 0;}
+        @foreach (var item in Model)
+        {
+            { row += 1; }
+
+            <tr onclick="location.href = '@(Url.Action("PlayerScoreCard", "PlayerCompList", new { CompScoreID = item.CompScoreID, rndNumber = row }))'" title="View Score Card">
+                <td class="hidden-xs" style="text-align:center">
+                    @row
+                </td>
+                <td>
+                    @String.Format("{0:dd MMM yy}", item.RndDate)
+                </td>
+                @{string teecolor = item.TeeColour;}
+                @switch (teecolor)
+                {
+                    case "Yellow":
+                        <td class="yellow-back" style="text-align:center">
+                            @teecolor
+                        </td>
+                        break;
+                    case "Red":
+                        <td class="red-back" style="text-align:center">
+                            @teecolor
+                        </td>
+                        break;
+                    default:
+                        <td  style="text-align:center">
+                            @teecolor
+                        </td>
+                        break;
+                }
+                <td style="text-align: center">
+                    @((int)item.HCap)
+                </td>
+                <td style="text-align: center; font-weight: bold">
+                    @item.ParScore
+                </td>
+                
+                <td style="text-align: center; font-weight: bold">
+                    @item.TotalScore
+                </td>
+                <td class="hidden-xs">
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole1)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole2)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole3)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole4)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole5)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole6)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole7)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole8)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole9)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole10)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole11)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole12)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole13)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole14)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole15)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole16)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole17)
+                </td>
+                <td class="netScore hidden-xs" style="text-align: center; vertical-align: middle">
+                    @Html.DisplayFor(modelItem => item.Hole18)
+                </td>
+            </tr>
+                    }
+    </table>
+</div>
+
+<div class="col-md-10">
+    @Html.ActionLink("Eclectic League Table", "EclecticTable", "PlayerCompList", new { ViewBag.CompID, ViewBag.CourseID }, new { @Class = "btn btn-default", style = "margin-top: 20px; margin-bottom: 50px" })
+</div>
+<br />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        formatnetScore()
+    });
+</script>
+
+<script type="text/javascript">
+    function formatnetScore() {
+        // iterate through each td based on class and format the score depending on par, birdie , bogey etc..
+        $('.netScore').each(function () {
+
+            var col = $(this).closest('td').index();
+            var holePar = parseInt(document.getElementById("maintable").rows[1].cells.item(col).innerHTML);
+            var holeScore = parseInt($(this).text());
+
+            if (holeScore !== 0) {
+                if (holeScore == holePar) {
+                    $(this).addClass('ScorePar');
+                }
+                else if (holePar - holeScore == 1) {
+                    $(this).addClass('ScoreBirdie');
+                }
+                else if (holePar - holeScore == 2) {
+                    $(this).addClass('ScoreEagle');
+                }
+                else if (holePar - holeScore == -1) {
+                    $(this).addClass('ScoreBogey');
+                }
+                else if (holePar - holeScore <= -2) {
+                    $(this).addClass('ScoreDblBogey');
+                }
+            }
+        })
+    };
+</script>

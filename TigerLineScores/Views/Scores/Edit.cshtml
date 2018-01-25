@@ -13,95 +13,93 @@
     });
 </script>
 @********* jQuery Date Pickers for Round Date ************@
+<script src="~/scripts/bootstrap-datepicker.min.js"></script>
 <script>
     $( function() {
         $("#rndDate").datepicker({
-            dateFormat: "dd MM yy",
-            changeMonth: true,
-            changeYear: true
+            format: "dd MM yyyy",
+            autoclose: "true"
         });
     } );
 </script>
 @*******************************************************************@
 
-<div style="border: 1px solid silver; border-radius: 5px; background-color: whitesmoke; padding: 20px; margin-bottom: 25px">
-    <h3 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 350px ; float: left">TIGER LINE SCORES</h3>
-    <img style="float: left; margin-left :25px" height="75" src="~/Images/Score_Card.jpg" />
-    <h4 style="clear: both">EDIT ROUND</h4>
-</div>
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 250px">EDIT ROUND DETAILS</h4>
+    <br />
 
-<div class="row">
-    <div class="col-md-4">
-        <H4 style="color: navy; font-weight: bold">@ViewBag.CompName</H4>
-        <H5>@ViewBag.CourseName - @Model.TeeColour Tees</H5>
-        <H5>@ViewBag.PlayerName - Handicap : @Convert.ToInt32(Model.PlayerHcap)</H5>
-    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <H4 style="color: navy; font-weight: bold">@ViewBag.CompName</H4>
+                <h4 style="font-weight: bold">@ViewBag.PlayerName</h4>
+                <H5>@ViewBag.CourseName - @Model.TeeColour Tees</H5>
+                <span>Handicap : </span> @Html.EditorFor(model => model.PlayerHcap, new { htmlAttributes = new { @style = "width: 50px; text-align: center; border-radius: 5px", @type = "number" } })
+            </div>
 
+            <div class="col-md-1">
+                @{if (Model.TeeColour == "Yellow")
+                    {
+                        <h5 style="background-color: #f7de54; border: 1px solid gray; border-radius: 5px; text-align: center">PAR @ViewBag.CoursePar</h5>
+                        <span>SSS</span> @Html.EditorFor(model => model.SSS, new { htmlAttributes = new { @style = "background-color: #f7de54; width: 70px; text-align: center; border-radius: 5px" } })
+                    }
+                    else if (Model.TeeColour == "Red")
+                    {
+                        <h5 style="background-color: #f66868; color:white; border: 1px solid gray; border-radius: 5px; text-align: center">PAR @ViewBag.CoursePar</h5>
+                        <span>SSS</span> @Html.EditorFor(model => model.SSS, new { htmlAttributes = new { @style = "background-color: #f66868; width: 70px; text-align: center; border-radius: 5px" } })
+                    }
+                    else
+                    {
+                        <h5 style="border: 1px solid gray; border-radius: 5px; text-align: center">PAR @ViewBag.CoursePar</h5>
+                        <span>SSS</span> @Html.EditorFor(model => model.SSS, new { htmlAttributes = new { @style = "width: 70px; text-align: center; border-radius: 5px" } })
+                    }
+                }
+            </div>
+        </div>
 
-
-    <div class="col-md-1">
-        @{if (Model.TeeColour == "Yellow")
-            {
-                <h5 style="background-color: #f7de54; border: 1px solid gray; border-radius: 5px; text-align: center">PAR @ViewBag.CoursePar</h5>
-                <h5 style="background-color: #f7de54; border: 1px solid gray; border-radius: 5px; text-align: center">SSS @Model.SSS</h5>
-            }
-            else if (Model.TeeColour == "Red")
-            {
-                <h5 style="background-color: #f66868; color:white; border: 1px solid gray; border-radius: 5px; text-align: center">PAR @ViewBag.CoursePar</h5>
-                <h5 style="background-color: #f66868; color:white; border: 1px solid gray; border-radius: 5px; text-align: center">SSS @Model.SSS</h5>
-            }
-            else
-            {
-                <h5 style="border: 1px solid gray; border-radius: 5px; text-align: center">PAR @ViewBag.CoursePar</h5>
-                <h5 style="border: 1px solid gray; border-radius: 5px; text-align: center">SSS @Model.SSS</h5>
-            }
-        }
-    </div>
-</div>
-
-@using (Html.BeginForm())
-{
-    <div class="row">
-        <div class="col-md-4">
-            <h5>Gross Round Points : <text style="border: 1px solid silver; padding-left:10px; padding-right:10px; text-align:center; border-radius: 5px">@Model.TotalPoints Pts</text></h5>
-            <h5 style="font-weight: bold">
-                Net Round Points : <text style="border: 1px solid gray; padding-left:10px; padding-right:10px; text-align:center;
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Gross Round Points : <text style="border: 1px solid silver; padding-left:10px; padding-right:10px; text-align:center; border-radius: 5px">@Model.TotalPoints Pts</text></h5>
+                <h5 style="font-weight: bold">
+                    Net Round Points : <text style="border: 1px solid gray; padding-left:10px; padding-right:10px; text-align:center;
                 border-radius: 5px; font-weight: bold; background-color: palegreen; margin-left: 5px">@ViewBag.NetPoints Pts</text>
             </h5>
-         </div>
+        </div>
 
-    <div class="col-md-3" style="font-weight: bold">
-        Round Date
-        @Html.EditorFor(model => model.RndDate, new { htmlAttributes = new { @class = "col-md-2 form-control", id = "rndDate" } })
-        @Html.ValidationMessageFor(model => model.RndDate, "", new { @class = "text-danger" })
-    </div>
+        <div class="col-md-3" style="font-weight: bold">
+            Round Date
+            @Html.EditorFor(model => model.RndDate, new { htmlAttributes = new { @class = "col-md-4 form-control datepicker", id = "rndDate", @readonly = "true", @style = "max-width: 300px; cursor: pointer; background-color: #fff" } })
+            @Html.ValidationMessageFor(model => model.RndDate, "", new { @class = "text-danger" })
+        </div>
 
     </div>
 
     @Html.AntiForgeryToken()
 
-    @Html.HiddenFor(model => model.CourseID, new { id = "courseID" })
-    @Html.HiddenFor(model => model.TeeColour, new { id = "teeColour" })
-    @Html.HiddenFor(model => model.PlayerHcap, new { id = "Hcap" })
-    @Html.HiddenFor(model => model.CompScoreID, new { htmlAttributes = new { id = "compscoreid", @class = "form-control" } })
-    @Html.HiddenFor(model => model.CompID, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.HiddenFor(model => model.CompPlayerID, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.HiddenFor(model => model.SSS, new { id = "SSS" })
+                    @Html.HiddenFor(model => model.CourseID, new { id = "courseID" })
+                    @Html.HiddenFor(model => model.TeeColour, new { id = "teeColour" })
+                    @Html.HiddenFor(model => model.PlayerHcap, new { id = "Hcap" })
+                    @Html.HiddenFor(model => model.CompScoreID, new { htmlAttributes = new { id = "compscoreid", @class = "form-control" } })
+                    @Html.HiddenFor(model => model.CompID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => model.CompPlayerID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => model.SSS, new { id = "SSS" })
 
 
-    @* SCORE CARD PARTIAL VIEW *@
-    <div class="row" style="clear:both">
-        <div id="partialviews">
-        </div>
-    </div>
+                    @* SCORE CARD PARTIAL VIEW *@
+                    <div class="row" style="clear:both">
+                        <div id="partialviews">
+                        </div>
+                    </div>
 
-    <br />
-        <div class="row">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.ActionLink("Back to List of Rounds", "Index", "Scores", new { Model.CompID, Model.CompPlayerID }, new { @Class = "btn btn-default", style = "margin-top: 20px; margin-bottom: 50px" })
-                    <input type="submit" value="Save Round Score" class="btn btn-success" style="margin-top: 20px; margin-bottom: 50px" />
-                </div>
-            </div>
-        </div>
-}
+                    <br />
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @Html.ActionLink("Back to List of Rounds", "Index", "Scores", new { Model.CompID, Model.CompPlayerID }, new { @Class = "btn btn-default", style = "margin-top: 20px; margin-bottom: 50px" })
+                                <input type="submit" value="Save Round Score" class="btn btn-success" style="margin-top: 20px; margin-bottom: 50px" />
+                            </div>
+                        </div>
+                    </div>
+                    }
+</div>

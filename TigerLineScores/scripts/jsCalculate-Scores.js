@@ -44,7 +44,7 @@ function calcfrontScore() {
             var strokes = parseInt(this.value);
 
             // ********** PASS IN THE VARIABLES AND DISPLAY THE RESULTING POINTS *********
-            $.get('/Scores/PointsScore/?Hcap=' + playingHcap + "&SI=" + $pel.text() + "&strokes=" + strokes + "&par=" + $par.text(), function (data) {
+            $.get('/Scores/PointsScore/?Hcap=' + playingHcap + "&SI=" + $pel.text() + "&strokes=" + strokes + "&par=" + $par.text() + "&compScoreID=" + 0 + "&holeNumber=" + 0, function (data) {
                 $($nel).text(data.newPoints.points);
                 var thisPts = data.newPoints.point;
                 frontPointsSum += thisPts;
@@ -83,7 +83,7 @@ function calcbackScore() {
             var strokes = parseInt(this.value);
 
             // ********** PASS IN THE VARIABLES AND DISPLAY THE RESULTING POINTS *********
-            $.get('/Scores/PointsScore/?Hcap=' + playingHcap + "&SI=" + $pel.text() + "&strokes=" + strokes + "&par=" + $par.text(), function (data) {
+            $.get('/Scores/PointsScore/?Hcap=' + playingHcap + "&SI=" + $pel.text() + "&strokes=" + strokes + "&par=" + $par.text() + "&compScoreID=" + 0 + "&holeNumber=" + 0, function (data) {
                 $($nel).text(data.newPoints.points);
             });
         }

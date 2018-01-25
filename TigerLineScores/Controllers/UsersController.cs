@@ -7,6 +7,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TigerLineScores.Models;
+using Jq.Grid;
+
+
 
 namespace TigerLineScores.Controllers
 {
@@ -21,8 +24,10 @@ namespace TigerLineScores.Controllers
 
              var AllUsers = from au in db.Users
                             join pro in db.Profiles on au.UserID equals pro.UserID
+                            join crs in db.CourseMains on pro.HomeClubID equals crs.CourseID 
                             orderby au.UserName 
-                            select new UserView {UserID = au.UserID, UserName = au.UserName, Email = au.Email, Password = au.Password, Admin = au.Admin, Photo = pro.Photo, Handicap= pro.Handicap };
+                            select new UserView {UserID = au.UserID, UserName = au.UserName, Email = au.Email, Password = au.Password, Admin = au.Admin, Photo = pro.Photo,
+                                                 Handicap = pro.Handicap, HomeCourse = crs.ClubName };
 
             //return View(AllUsers);
             ViewBag.AllUsers = AllUsers.ToList();
@@ -84,14 +89,18 @@ namespace TigerLineScores.Controllers
                               join pr in db.Profiles on ur.UserID equals pr.UserID
                               where ur.UserID == id
                               select new UserView { UserID = ur.UserID, UserName = ur.UserName, Email = ur.Email, Password = ur.Password, Admin = ur.Admin,
-                                                    Photo = pr.Photo, Handicap = pr.Handicap };
+                                                    Photo = pr.Photo, Handicap = pr.Handicap, HomeClubID = pr.HomeClubID };
 
             UserView uView = new UserView();
             foreach (var item in UserProfile)
             {
                  uView = item;
             }
-            
+
+            // Get Club Names For Drop Down List
+            var courseInfo = new CourseInfo();
+            ViewBag.HomeClubID = courseInfo.GetCourseList();
+
             if (UserProfile == null)
             {
                 return HttpNotFound();
@@ -104,7 +113,7 @@ namespace TigerLineScores.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,UserName,Email,Password,Handicap,Admin")] UserView userView)
+        public ActionResult Edit([Bind(Include = "UserID,UserName,Email,Password,Handicap,Admin,HomeClubID")] UserView userView)
         {
             if (ModelState.IsValid)
             {
@@ -128,6 +137,7 @@ namespace TigerLineScores.Controllers
                 foreach (var item in UserProfile)
                 {
                     item.Handicap = userView.Handicap;
+                    item.HomeClubID = userView.HomeClubID;
                 }
 
                 db.SaveChanges();
@@ -175,6 +185,131 @@ namespace TigerLineScores.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+
+        public ActionResult UsersGrid()
+        {
+            var gridModel = new UsersGridModel();
+            var grid = gridModel.UsersGrid;
+            SetupGrid(grid);
+
+            return View(gridModel);
+        }
+
+        private void SetupGrid(JQGrid grid)
+        {
+            grid.ID = "UsersGrid";
+            grid.DataUrl = Url.Action("DataRequested");
+            grid.SortSettings.AutoSortByPrimaryKey = false;
+            grid.SortSettings.InitialSortColumn = "UserName";
+            grid.SortSettings.InitialSortDirection = SortDirection.Asc;
+
+            grid.AppearanceSettings.HighlightRowsOnHover = true;
+
+            // show Search button and search toolbar
+            grid.ToolBarSettings.ShowSearchToolBar = true;
+            grid.ToolBarSettings.ShowSearchButton = true;
+
+            var homecourseColumn = grid.Columns.Find(c => c.DataField == "HomeCourse");
+            homecourseColumn.SearchType = SearchType.AutoComplete;
+            homecourseColumn.DataType = typeof(string);
+            homecourseColumn.SearchControlID = "AutoComplete";
+            homecourseColumn.SearchToolBarOperation = SearchOperation.BeginsWith;
+
+
+
+            grid.ToolBarSettings.ShowEditButton = true;
+            grid.EditDialogSettings.CloseAfterEditing = true;
+            SetupVirtualScrollingGrid(grid);
+
+        }
+
+        private void SetupVirtualScrollingGrid(JQGrid grid)
+        {
+            grid.PagerSettings.ScrollBarPaging = true;
+            grid.PagerSettings.PageSize = 20;
+            grid.Height = System.Web.UI.WebControls.Unit.Pixel(400);
+        }
+
+        // This method is called when the grid requests data
+        public JsonResult DataRequested()
+        {
+            UsersGridModel gridModel = new UsersGridModel();
+            var AllUsers = from au in db.Users
+                           join pro in db.Profiles on au.UserID equals pro.UserID
+                           join crs in db.CourseMains on pro.HomeClubID equals crs.CourseID
+                           orderby au.UserName
+                           select new UserView
+                           {
+                               UserID = au.UserID,
+                               UserName = au.UserName,
+                               Email = au.Email,
+                               Admin = au.Admin,
+                               Photo = pro.Photo,
+                               Handicap = pro.Handicap,
+                               HomeCourse = crs.ClubName
+                           };
+
+            return gridModel.UsersGrid.DataBind(AllUsers);
+
+        }
+
+        public ActionResult ShowUser(int UserID)
+        {
+            var UserProfile = (from ur in db.Users
+                              join pr in db.Profiles on ur.UserID equals pr.UserID
+                              where ur.UserID == UserID
+                              select new UserView
+                              {
+                                  UserID = ur.UserID,
+                                  UserName = ur.UserName,
+                                  Email = ur.Email,
+                                  Password = ur.Password,
+                                  Admin = ur.Admin,
+                                  Photo = pr.Photo,
+                                  Handicap = pr.Handicap,
+                                  HomeClubID = pr.HomeClubID
+                              }).SingleOrDefault();
+
+           
+            // Get Club Names For Drop Down List
+            var courseInfo = new CourseInfo();
+            ViewBag.HomeClubID = courseInfo.GetCourseList();
+
+            return PartialView("_UserDetails", UserProfile);
+        }
+
+        public ActionResult SaveDetails(UserView model)
+        {
+
+            //Update User Record
+            User user = db.Users.Find(model.UserID);
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+            user.Password = model.Password;
+            user.Admin = model.Admin;
+
+            //Update Profile Record
+            var UserProfile = from up in db.Profiles
+                              where up.UserID == user.UserID
+                              select up;
+
+            foreach (var item in UserProfile)
+            {
+                item.Handicap = model.Handicap;
+                item.HomeClubID = model.HomeClubID;
+            }
+
+            db.SaveChanges();
+
+
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {

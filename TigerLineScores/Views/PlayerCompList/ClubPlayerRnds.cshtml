@@ -1,0 +1,91 @@
+﻿@model IEnumerable<TigerLineScores.Models.CompScore>
+
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Player Rounds";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 270px">PLAYER ROUNDS - OOM</h4>
+    <br />
+
+    <H4 style="color: darkred; font-weight: bold">@ViewBag.ClubName</H4>
+    <br />
+
+    <table class="table table-bordered" id="maintable" style="margin-bottom: 20px; max-width: 800px">
+        <tr style="background-color: whitesmoke">
+            <th class="tableHeader">
+                Player
+            </th>
+            <th class="tableHeader">
+                Date
+            </th>
+            <th class="tableHeader hidden-xs">
+                Tee Colour
+            </th>
+            <th class="tableHeader">
+                Gross Score
+            </th>
+            <th class="tableHeader hidden-xs">
+                Handicap
+            </th>
+            <th class="tableHeader">
+                NET Points
+            </th>
+        </tr>
+
+        @foreach (var item in ViewBag.RndSummary)
+        {
+            <tr onclick="location.href = '@(Url.Action("PlayerScoreCard", "PlayerCompList", new { CompScoreID = item.CompScoreID, rndNumber = item.RndNumber }))'" title="View Score Card">
+                <td style="font-weight: bold">
+                    @item.Player
+                </td>
+                <td class="hidden-xs">
+                    @String.Format("{0:dd MMMM yyyy}", item.RndDate)
+                </td>
+                <td class="visible-xs">
+                    @String.Format("{0:dd MMM yy}", item.RndDate)
+                </td>
+                @{string teecolor = item.TeeColour;}
+                @switch (teecolor)
+                {
+                    case "Yellow":
+                        <td class="yellow-back hidden-xs" style="text-align:center">
+                            @teecolor
+                        </td>
+                        break;
+                    case "Red":
+                        <td class="red-back hidden-xs" style="text-align:center">
+                            @teecolor
+                        </td>
+                        break;
+                    default:
+                        <td class="hidden-xs" style="text-align:center">
+                            @teecolor
+                        </td>
+                        break;
+                }
+                <td style="text-align: center; font-weight: bold">
+                    @item.RndScore
+                </td>
+                <td class="hidden-xs" style="text-align: center">
+                    @Convert.ToInt32(item.Handicap)
+                </td>
+                <td style="text-align: center; font-weight: bold; color: darkred">
+                    @item.NETRndPoints
+                </td>
+            </tr>
+                    }
+    </table>
+</div>
+
+<div class="col-lg-12">
+    @Html.ActionLink("Inter-Club League Table", "InterClubTable", "PlayerCompList", new { compID = ViewBag.CompID }, new { @Class = "btn btn-default", style = "margin-top: 20px; margin-bottom: 30px" })
+</div>
+<br />

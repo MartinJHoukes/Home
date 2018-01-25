@@ -1,0 +1,86 @@
+﻿@model IEnumerable<TigerLineScores.Models.UpcomingRnd>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #maintable tr:hover {
+        background-color: #fce1cd;
+        cursor: pointer;
+    }
+</style>
+
+
+<div class="col-lg-10">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 320px">MY UPCOMING ROUNDS</h4>
+    <br />
+    <H4 style="color: darkgreen; font-weight: bold">@ViewBag.CompName</H4>
+    <H4>
+        <img id="uPhoto" src="@ViewBag.PlayerPhoto" style="width: 60px" />
+        @ViewBag.PlayerName
+    </H4>
+    <H5> Current Handicap : @ViewBag.CurrentHCap</H5>
+    <br />
+
+    <table class="table table-bordered" id="maintable" style="max-width: 800px">
+        <tr style="background-color: whitesmoke">
+            <th>
+                Round Date
+            </th>
+            <th>
+                Course
+            </th>
+            <th class="hidden-xs">
+                Round Type
+            </th>
+            <th class="hidden-xs">
+                Note
+            </th>
+            <th>
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td onclick="location.href = '@(Url.Action("Edit", "UpcomingRnds", new { RndID = item.RndID }))'">
+                    @Html.DisplayFor(modelItem => item.RndDate)
+                </td>
+                <td onclick="location.href = '@(Url.Action("Edit", "UpcomingRnds", new { RndID = item.RndID }))'">
+                    @Html.DisplayFor(modelItem => item.CourseName)
+                </td>
+                <td class="hidden-xs" onclick="location.href = '@(Url.Action("Edit", "UpcomingRnds", new { RndID = item.RndID }))'">
+                    @Html.DisplayFor(modelItem => item.RndType)
+                </td>
+                <td class="hidden-xs" onclick="location.href = '@(Url.Action("Edit", "UpcomingRnds", new { RndID = item.RndID }))'">
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td class="hidden-xs">
+                    <a href="@Url.Action("DeleteRnd", "UpcomingRnds", new { RndID = item.RndID })" class="confirm" alt="Confirm Delete" style="color: red"
+                       title="Remove Upcoming Round?">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        Remove
+                    </a>
+                </td>
+                <td class="visible-xs">
+                    <a href="@Url.Action("DeleteRnd", "UpcomingRnds", new { RndID = item.RndID })" class="confirm" alt="Confirm Delete" style="color: red"
+                       title="Remove Upcoming Round?">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    @if (Model.Count() == 0)
+    {
+        <span style="margin-left: 10px; font-weight: bold; font-style: italic; color: darkblue">No upcoming rounds submitted ..</span><br />
+    }
+
+    @Html.ActionLink("New Upcoming Round", "Create", "UpcomingRnds", new { compPlayerID = ViewBag.CompPlayerID, compID = ViewBag.CompID }, new { @Class = "btn btn-default", style = "margin-top: 20px; margin-bottom: 30px" })
+
+
+</div>

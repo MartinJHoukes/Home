@@ -1,0 +1,239 @@
+﻿@model TigerLineScores.Models.ScoreCardImage
+
+@{
+    ViewBag.Title = "Upload Score Card";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    // Change the Colour of the ddlTeeColour & SSS boxes ***************
+    $(function () {
+        teecolorChange()
+    });
+
+    $(function () {
+        $("#ddlteecolor").change(teecolorChange);
+    });
+
+    function teecolorChange() {
+        var cvalue = $('#ddlteecolor option:selected').text();
+        var bcolor = "white";
+        var fcolor = "grey"
+        switch (cvalue) {
+            case "Yellow":
+                bcolor = "#f7de54"
+                fcolor = "grey"
+                break;
+            case "Red":
+                bcolor = "#f66868"
+                fcolor = "black"
+                break;
+            default:
+                bcolor = "White"
+                fcolor = "grey"
+        }
+
+        $("#SSS").css({
+            "background-color": bcolor,
+            "color": fcolor
+        });
+        $("#ddlteecolor").css({
+            "background-color": bcolor,
+            "color": fcolor
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    // Gets the SSS for the Selected Course and Tee Colour via a Json call *****************
+    $(function () {
+        $("#ddlcourse").change(function () {
+            $.get('/Scores/CourseSSS/?id=' + $(this).val() + "&teecolour=" + $("#ddlteecolor").val(), function (data) {
+                $('#SSS').val(data.newcompScore.SSS);
+            });
+        });
+        $("#ddlteecolor").change(function () {
+            $.get('/Scores/CourseSSS/?id=' + $("#ddlcourse").val() + "&teecolour=" + $(this).val(), function (data) {
+                $('#SSS').val(data.newcompScore.SSS);
+            });
+        });
+        if ($('#SSS').val() === "") {
+            $.get('/Scores/CourseSSS/?id=' + $("#ddlcourse").val() + "&teecolour=" + $("#ddlteecolor").val(), function (data) {
+                $('#SSS').val(data.newcompScore.SSS);
+            });
+        };
+    });
+</script>
+
+<div class="col-lg-12">
+    <h4 style="font-style: italic; font-weight: bold; border-bottom:1px solid green; width: 300px">EDIT PENDING SCORE CARD</h4>
+    <br />
+    <h4 style="color: darkgreen; font-weight: bold">@ViewBag.CompName</h4>
+    <h4 style="color: black; font-weight: bold; font-style: italic">@ViewBag.UserName</h4>
+    <br />
+
+    @using (Html.BeginForm("Edit", "ScoreCardImages", FormMethod.Post, new { enctype = "multipart/form-data", id = "scorecardform" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.CompID)
+        @Html.HiddenFor(model => model.UserID)
+        @Html.HiddenFor(model => model.ImageID)
+        @Html.HiddenFor(model => model.Processed)
+        @Html.HiddenFor(model => model.CardImage)
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CourseID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CourseID, ViewBag.CourseList as SelectList, "Select a Course ..", new { id = "ddlcourse", @class = "form-control", style = "max-width: 280px" })
+                    @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TeeColour, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.TeeColour, ViewBag.TeeColour as SelectList, new { id = "ddlteecolor", @class = "form-control", style = "max-width: 280px" })
+                    @Html.ValidationMessageFor(model => model.TeeColour, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SSS, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SSS, new { htmlAttributes = new { id = "SSS", @class = "form-control", style = "max-width: 80px" } })
+                    @Html.ValidationMessageFor(model => model.SSS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.RoundDate, htmlAttributes: new { @class = "control-label col-md-2 datepicker" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RoundDate, new { htmlAttributes = new { @class = "form-control datapicker", id = "rndDate", @readonly = "true", style = "max-width: 280px; cursor: pointer; background-color: #fff" } })
+                    @Html.ValidationMessageFor(model => model.RoundDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", style = "max-width: 280px" } })
+                    @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-10 col-lg-offset-2">
+            <img id="cardImage" height="500" style="margin-top: 10px; margin-bottom: 10px; margin-left: -20px" src="@Model.CardImage" />
+        </div>
+        <div class="control-label col-md-10 col-md-offset-2">
+            <label for="UploadScoreCard" class="btn btn-default" style="margin-left:-20px">
+                <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
+                Replace Score Card Image
+            </label>
+            <input type="file" name="UploadScoreCard" id="UploadScoreCard" style="visibility: hidden" />
+        </div>
+
+        <div class="control-label col-md-10 col-md-offset-2" style="margin-left: -20px">
+            <img id="uploadPreview" style="width: 300px" />
+        </div>
+        <div class="control-label col-md-10 col-md-offset-2">
+            <button class="btn btn-primary" type="submit" id="save" style="margin-left:-20px; margin-bottom: 20px">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                Save Changes
+            </button>
+            <img id="myLoadingElement" width="100" style="visibility: hidden" src="~/Images/loading-gif.gif" alt="Loading..." />
+
+        </div>
+    }
+</div>	
+
+@* Successful Image Upload*@
+<div id="divSuccesspopup" class="popupnotvisible" style="margin-top: -20px">
+    <span>@TempData["SuccessUpload"]</span><br /><br />
+    <button class="btn btn-xs btn-success" onclick="hideSuccesspopup()">close</button>
+</div>
+
+<div id="divFailpopup" class="popupnotvisible" style="margin-top: -20px">
+    <span>@TempData["FailUpload"]</span><br /><br />
+    <button class="btn btn-xs btn-danger" onclick="hideFailpopup()">close</button>
+</div>
+
+<script type="text/javascript">
+    function showSuccesspopup() {
+        document.getElementById("divSuccesspopup").className = "popupvisible-Success";
+        $('#save').attr("disabled", true);
+    }
+    function hideSuccesspopup() {
+        document.getElementById("divSuccesspopup").className = "popupnotvisible";
+    }
+    function hideFailpopup() {
+        document.getElementById("divFailpopup").className = "popupnotvisible";
+    }
+    function showFailpopup() {
+        document.getElementById("divFailpopup").className = "popupvisible-Danger";
+    }
+</script>
+
+@if (TempData["SuccessUpload"] != null)
+{
+    <script type="text/javascript">
+        showSuccesspopup()
+    </script>
+}
+
+@if (TempData["FailUpload"] != null)
+{
+    <script type="text/javascript">
+        showFailpopup()
+    </script>
+}
+
+@*If validation fails - make spinning icon invisible*@
+<script>
+    $(function () {
+        $("#scorecardform").bind("invalid-form.validate", function () {
+            $("#myLoadingElement").css("visibility", "hidden");
+        });
+    });
+</script>
+
+@*Show spinning icon when form is submitted*@
+<script type="text/javascript">
+    $("#scorecardform").submit(function (e) {
+        $("#myLoadingElement").css("visibility", "visible");
+    });
+</script>
+
+
+
+@********* jQuery Date Pickers for Round Date ************@
+<script src="~/scripts/bootstrap-datepicker.min.js"></script>
+<script>
+    $(function () {
+        $("#rndDate").datepicker({
+            format: "dd MM yyyy",
+            autoclose: "true"
+        });
+    });
+</script>
+@*******************************************************************@
+
+@*Set background of Course DDL to Green if Course Selected*@
+<script>
+    $(function () {
+
+        $(function () {
+            $("#ddlcourse").change(checkcourse);
+        });
+
+        checkcourse()
+    });
+
+    function checkcourse() {
+        var cvalue = $('#ddlcourse option:selected').text();
+        if (cvalue == "Select a Course ..") {
+            $('#ddlcourse').attr('style', 'background-color: white; color: grey; max-width: 280px');
+        } else {
+            $('#ddlcourse').attr('style', 'background-color: green; color: white; max-width: 280px');
+        }
+    }
+
+</script>
